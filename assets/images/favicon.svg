@@ -1,8 +1,8 @@
-﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#0d0e12" />
-  <rect x="2" y="2" width="60" height="60" rx="12" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
-  <!-- Lowercase Editorial Amazon 'a' -->
-  <text x="32" y="40" font-family="'Space Grotesk', -apple-system, sans-serif" font-size="34" font-weight="700" fill="#ffffff" text-anchor="middle">a</text>
-  <!-- Iconic Minimalist Smile Arc -->
-  <path d="M18 46 C26 53, 38 53, 46 46" fill="none" stroke="#ff9900" stroke-width="3" stroke-linecap="round" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#0c0d10" stroke="#252830" stroke-width="1.5" />
+  <!-- Editorial Amazon Text Logo: AMZ -->
+  <text x="32" y="38" font-family="'Space Grotesk', -apple-system, sans-serif" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="1">AMZ</text>
+  <!-- Iconic Orange Smile Curve with Arrow -->
+  <path d="M15 42 C24 49, 40 49, 49 42" fill="none" stroke="#ff9900" stroke-width="2.8" stroke-linecap="round" />
+  <polygon points="49,39 52,43 47,43" fill="#ff9900" />
 </svg>
