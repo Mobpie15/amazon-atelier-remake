@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AMAZON // ATELIER &bull; Minimalist Architectural Flagship</title>
+  <meta name="description" content="A pure minimalist architectural redesign of Amazon. Curated industrial design objects, sub-second headless interactions, and 1-tap checkout.">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       0. DEDICATED MOBILE COMMAND HEADER (VISIBLE ONLY ON MOBILE <= 860px)
+       ========================================================================= -->
+  <header class="mobile-header-bar">
+    <div class="mobile-header-top">
+      <div class="mobile-header-left">
+        <button type="button" id="mobile-menu-trigger" class="mobile-icon-btn" aria-label="Open Departments Drawer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <a href="#" class="mobile-brand-logo font-display">
+          <span>AMZN.</span>
+          <span class="mobile-brand-sub font-mono">ATELIER</span>
+        </a>
+      </div>
+
+      <div class="mobile-header-right">
+        <!-- Location Indicator Pill -->
+        <button type="button" id="mobile-location-btn" class="mobile-loc-pill font-mono" title="Change Delivery Location">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <span class="mobile-loc-text">Delhi</span>
+        </button>
+
+        <!-- Currency Selector Pill -->
+        <button type="button" id="mobile-currency-btn" class="mobile-curr-pill font-mono" title="Select Currency">
+          <span class="active-currency-code">USD</span>
+        </button>
+
+        <!-- Bag Trigger Button -->
+        <button type="button" id="mobile-cart-btn" class="mobile-bag-btn font-mono" title="View Bag">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="mobile-cart-badge cart-count-badge">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Full-Width Interactive Search Bar -->
+    <div class="mobile-search-row">
+      <div class="mobile-search-wrapper">
+        <svg class="mobile-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="mobile-search-input" class="mobile-search-input font-body" placeholder="Search objects, audio, optics..." autocomplete="off" spellcheck="false">
+        <button type="button" id="mobile-search-clear" class="mobile-search-clear" aria-label="Clear Search" style="display: none;">&times;</button>
+      </div>
+    </div>
+
+    <!-- Mobile Horizontally-Scrollable Category Strip -->
+    <div class="mobile-category-scroll">
+      <button type="button" class="mobile-cat-pill font-mono active" data-category="All">All Objects</button>
+      <button type="button" class="mobile-cat-pill font-mono" data-category="Acoustics">Acoustics</button>
+      <button type="button" class="mobile-cat-pill font-mono" data-category="Optics">Optics</button>
+      <button type="button" class="mobile-cat-pill font-mono" data-category="Synthesizers">Synthesizers</button>
+      <button type="button" class="mobile-cat-pill font-mono" data-category="Industrial Living">Industrial Living</button>
+      <button type="button" class="mobile-cat-pill font-mono" data-category="Timepieces">Timepieces</button>
+    </div>
+  </header>
+
+
+  <!-- 1. PRIMARY COMMAND HEADER -->
+  <header class="header-bar">
+    <div class="container header-inner">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="brand-anchor" title="Amazon Atelier Home">
+        <span class="brand-logo font-display">AMZN.</span>
+        <span class="brand-sub font-mono">ATELIER</span>
+      </a>
+
+      <!-- Delivery PIN & Location Selector -->
+      <button type="button" id="location-trigger-btn" class="header-location-btn font-mono" title="Change Delivery Location">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+        <span id="delivery-location-label" class="location-text">Deliver to <strong>Alexander</strong> &bull; New Delhi 110001</span>
+      </button>
+
+      <!-- Intelligent Command Search -->
+      <div class="search-wrapper">
+        <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="search-input" class="search-input font-body" placeholder="Search architectural objects, audio, optics..." autocomplete="off" spellcheck="false">
+        <span class="search-key-badge font-mono" title="Press / or Ctrl+K to search">/</span>
+      </div>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        
+        <!-- Language & Currency Selector Trigger -->
+        <button type="button" id="lang-curr-trigger-btn" class="header-action-pill font-mono" title="Select Language & Currency">
+          <span class="active-language-code">EN</span>
+          <span class="pill-divider">/</span>
+          <span class="active-currency-code">USD</span>
+        </button>
+
+        <!-- Account & Lists Trigger -->
+        <button type="button" id="account-trigger-btn" class="header-account-btn" title="View Atelier Account Profile">
+          <span class="account-sub font-mono">Hello, Alexander</span>
+          <span class="account-main font-mono">Account &amp; Lists</span>
+        </button>
+
+        <!-- Orders Trigger -->
+        <button type="button" id="orders-trigger-btn" class="header-orders-btn font-mono" title="View Order History & Telemetry">
+          <span>Returns</span>
+          <strong>&amp; Orders</strong>
+        </button>
+
+        <!-- 1-Tap Bag Drawer Trigger -->
+        <button type="button" id="cart-trigger-btn" class="cart-button font-mono" title="View Bag &amp; 1-Tap Checkout">
+          <span>BAG</span>
+          <span class="cart-count-badge">0</span>
+        </button>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- 2. SECONDARY SUBNAV BAR (AMAZON STYLE) -->
+  <nav class="subnav-bar">
+    <div class="container subnav-inner">
+      <div class="subnav-left">
+        <!-- All Departments Trigger -->
+        <button type="button" id="all-departments-trigger" class="subnav-all-btn font-mono">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <span>ALL DEPARTMENTS</span>
+        </button>
+
+        <a href="#" class="subnav-link dept-nav-link font-mono" data-category="Acoustics">Acoustics</a>
+        <a href="#" class="subnav-link dept-nav-link font-mono" data-category="Optics">Optics</a>
+        <a href="#" class="subnav-link dept-nav-link font-mono" data-category="Synthesizers">Synthesizers</a>
+        <a href="#" class="subnav-link dept-nav-link font-mono" data-category="Industrial Living">Industrial Living</a>
+        <a href="#" class="subnav-link dept-nav-link font-mono" data-category="Timepieces">Timepieces</a>
+        <a href="#" class="subnav-link dept-nav-link font-mono" data-category="Apparel & Scent">Apparel & Scent</a>
+      </div>
+
+      <div class="subnav-right">
+        <span class="subnav-prime-tag font-mono">PRIME 24H EXPRESS COURIER</span>
+        <a href="#" class="subnav-link font-mono" onclick="alert('Atelier Concierge Hotline: direct@atelier-amazon.com')">Concierge</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 3. HERO CURATED SPOTLIGHT -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-spotlight">
+        <div class="hero-image-box">
+          <img src="assets/images/prod-synth.jpg" alt="Teenage Engineering OP-1 Field">
+          <span class="hero-edition-chip font-mono">FEATURED // CURATED FLAGSHIP</span>
+        </div>
+
+        <div class="hero-info-box">
+          <div class="hero-brand-meta">
+            <span class="brand-tag font-mono">TEENAGE ENGINEERING</span>
+            <span class="prime-pill font-mono">PRIME 24H COURIER</span>
+          </div>
+
+          <h1 class="hero-title font-display">OP-1 Field Portable Synthesizer</h1>
+          <p class="hero-desc">
+            The definitive anodized aluminum workstation. Stereo signal path throughout, 24-hour battery life, 100 new features, and high-resolution glass flush display.
+          </p>
+
+          <div class="hero-specs-row">
+            <div class="spec-block">
+              <span class="spec-label font-mono">CHASSIS</span>
+              <span class="spec-val">Aluminum Unibody</span>
+            </div>
+            <div class="spec-block">
+              <span class="spec-label font-mono">BATTERY</span>
+              <span class="spec-val">24 Hours Play</span>
+            </div>
+            <div class="spec-block">
+              <span class="spec-label font-mono">WEIGHT</span>
+              <span class="spec-val">590 Grams</span>
+            </div>
+          </div>
+
+          <div class="hero-action-row">
+            <span class="hero-price font-display">$1,999</span>
+            <button type="button" id="hero-add-to-bag" class="hero-add-btn font-mono">
+              <span>COMMISSION OBJECT</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. ACTIVE FILTER CRITERIA CHIPS BAR -->
+  <div class="container">
+    <div id="active-filters-bar" class="active-filters-bar" style="display: none;"></div>
+  </div>
+
+  <!-- 5. MAIN CATALOG WITH SIDEBAR FILTERS -->
+  <section class="catalog-section">
+    <div class="container catalog-layout">
+      
+      <!-- Collapsible Architectural Filter Sidebar -->
+      <aside id="catalog-sidebar" class="catalog-sidebar">
+        <div class="sidebar-header">
+          <span class="sidebar-title font-mono">FILTERS &amp; PARAMETERS</span>
+          <button type="button" class="sidebar-reset-link font-mono" onclick="window.AtelierFilters && window.AtelierFilters.resetAll()">RESET</button>
+        </div>
+
+        <!-- Filter Block: Delivery & Prime -->
+        <div class="filter-group">
+          <h4 class="filter-group-title font-mono">FULFILLMENT</h4>
+          <label class="toggle-row">
+            <input type="checkbox" id="filter-prime-toggle">
+            <span class="toggle-slider"></span>
+            <span class="toggle-label font-mono">Prime 24h Express Only</span>
+          </label>
+          <label class="toggle-row">
+            <input type="checkbox" id="filter-stock-toggle">
+            <span class="toggle-slider"></span>
+            <span class="toggle-label font-mono">In-Stock Only</span>
+          </label>
+        </div>
+
+        <!-- Filter Block: Price Range -->
+        <div class="filter-group">
+          <h4 class="filter-group-title font-mono">PRICE SPECTRUM</h4>
+          <div class="price-presets-col">
+            <button type="button" class="price-preset-btn font-mono active" data-preset="all">All Values</button>
+            <button type="button" class="price-preset-btn font-mono" data-preset="under500">Under $500</button>
+            <button type="button" class="price-preset-btn font-mono" data-preset="500to1500">$500 &mdash; $1,500</button>
+            <button type="button" class="price-preset-btn font-mono" data-preset="1500to5000">$1,500 &mdash; $5,000</button>
+            <button type="button" class="price-preset-btn font-mono" data-preset="over5000">Over $5,000</button>
+          </div>
+        </div>
+
+        <!-- Filter Block: Brands -->
+        <div class="filter-group">
+          <h4 class="filter-group-title font-mono">ATELIER HOUSES</h4>
+          <div id="filter-brands-list" class="filter-checkbox-list font-mono">
+            <!-- Injected by filters.js -->
+          </div>
+        </div>
+
+        <!-- Filter Block: Materials -->
+        <div class="filter-group">
+          <h4 class="filter-group-title font-mono">MATERIAL PROVENANCE</h4>
+          <div id="filter-materials-list" class="filter-checkbox-list font-mono">
+            <!-- Injected by filters.js -->
+          </div>
+        </div>
+
+        <!-- Filter Block: Minimum Rating -->
+        <div class="filter-group">
+          <h4 class="filter-group-title font-mono">VERIFIED SENTIMENT</h4>
+          <div class="rating-presets-row font-mono">
+            <button type="button" class="rating-filter-btn active" data-rating="0">ALL</button>
+            <button type="button" class="rating-filter-btn" data-rating="4.8">4.8+</button>
+            <button type="button" class="rating-filter-btn" data-rating="4.9">4.9+</button>
+            <button type="button" class="rating-filter-btn" data-rating="5.0">5.0</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Main Content: Toolbar & Grid -->
+      <main class="catalog-main">
+        
+        <!-- Category Pills & Toolbar Row -->
+        <div class="catalog-toolbar-row">
+          <div class="category-pills-row">
+            <button type="button" class="category-pill font-mono active" data-category="All">All Objects</button>
+            <button type="button" class="category-pill font-mono" data-category="Acoustics">Acoustics</button>
+            <button type="button" class="category-pill font-mono" data-category="Optics">Optics</button>
+            <button type="button" class="category-pill font-mono" data-category="Synthesizers">Synthesizers</button>
+            <button type="button" class="category-pill font-mono" data-category="Industrial Living">Industrial Living</button>
+            <button type="button" class="category-pill font-mono" data-category="Timepieces">Timepieces</button>
+            <button type="button" class="category-pill font-mono" data-category="Apparel & Scent">Apparel & Scent</button>
+          </div>
+
+          <div class="toolbar-controls-right">
+            <button type="button" id="mobile-filter-trigger" class="mobile-filter-btn font-mono">
+              <span>FILTERS</span>
+            </button>
+            <span id="results-count" class="results-count font-mono">16 OBJECTS</span>
+            <select id="sort-select" class="sort-select font-mono" aria-label="Sort catalog">
+              <option value="curated">Curated Order</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Highest Rated</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Product Cards Grid -->
+        <div id="products-grid" class="products-grid">
+          <!-- Rendered dynamically by store.js -->
+        </div>
+
+      </main>
+
+    </div>
+  </section>
+
+  <!-- 6. ALL DEPARTMENTS MEGA-MENU FLYOUT DRAWER -->
+  <div id="departments-drawer-overlay" class="cart-overlay"></div>
+  <aside id="departments-drawer" class="departments-drawer" aria-label="Department Directory">
+    <div class="dept-header">
+      <span class="dept-title font-display">ARCHITECTURAL DEPARTMENTS</span>
+      <button type="button" id="departments-drawer-close" class="cart-close-btn" aria-label="Close">&times;</button>
+    </div>
+    <div class="dept-list font-mono">
+      <div class="dept-section-label">FLAGSHIP DISCIPLINES</div>
+      <a href="#" class="dept-nav-link" data-category="All">00 // Complete Archive (16 Objects)</a>
+      <a href="#" class="dept-nav-link" data-category="Acoustics">01 // Acoustics &amp; Studio Reference (2 Objects)</a>
+      <a href="#" class="dept-nav-link" data-category="Optics">02 // Optics &amp; Precision Rangefinders (1 Object)</a>
+      <a href="#" class="dept-nav-link" data-category="Synthesizers">03 // Synthesizers &amp; Field Audio (2 Objects)</a>
+      <a href="#" class="dept-nav-link" data-category="Industrial Living">04 // Bauhaus &amp; Industrial Living (4 Objects)</a>
+      <a href="#" class="dept-nav-link" data-category="Timepieces">05 // Horology &amp; Minimalist Chronos (2 Objects)</a>
+      <a href="#" class="dept-nav-link" data-category="Apparel & Scent">06 // Luxury Apparel &amp; Scent (5 Objects)</a>
+
+      <div class="dept-section-label" style="margin-top: 2rem;">LOGISTICS &amp; PROGRAMS</div>
+      <a href="#" class="dept-nav-link" onclick="window.AtelierAccount.openModal('profile'); return false;">Atelier Executive Membership</a>
+      <a href="#" class="dept-nav-link" onclick="window.AtelierAccount.openModal('orders'); return false;">Active Airfreight Telemetry</a>
+      <a href="#" class="dept-nav-link" onclick="alert('Complimentary White-Glove Courier enabled for all orders over $150'); return false;">White-Glove Delivery Standards</a>
+    </div>
+  </aside>
+
+  <!-- 7. DELIVERY LOCATION MODAL -->
+  <div id="location-modal-overlay" class="modal-overlay">
+    <div class="modal-window location-modal-box">
+      <button type="button" id="location-modal-close" class="modal-close-btn" aria-label="Close">&times;</button>
+      <div class="location-modal-inner">
+        <h3 class="location-modal-title font-display">CHOOSE YOUR DELIVERY LOCATION</h3>
+        <p class="location-modal-desc font-body">Delivery options and courier dispatch speeds will be tuned specifically to your destination.</p>
+
+        <div class="preset-addresses-grid font-mono">
+          <div class="preset-address-card" data-city="New Delhi" data-pin="110001">
+            <span class="addr-tag">STUDIO // PRIMARY</span>
+            <h4>Alexander Wright</h4>
+            <p>Studio 4B, 18 Design District</p>
+            <span class="addr-city">New Delhi 110001</span>
+          </div>
+          <div class="preset-address-card" data-city="Mumbai" data-pin="400050">
+            <span class="addr-tag">PENTHOUSE</span>
+            <h4>Alexander Wright</h4>
+            <p>Residence 32, Sky Enclave</p>
+            <span class="addr-city">Mumbai 400050</span>
+          </div>
+          <div class="preset-address-card" data-city="New York" data-pin="10001">
+            <span class="addr-tag">US ATELIER</span>
+            <h4>Alexander Wright</h4>
+            <p>540 West 26th Street</p>
+            <span class="addr-city">New York, NY 10001</span>
+          </div>
+          <div class="preset-address-card" data-city="London" data-pin="W1F 8GW">
+            <span class="addr-tag">UK STUDIO</span>
+            <h4>Alexander Wright</h4>
+            <p>14 Soho Square</p>
+            <span class="addr-city">London W1F 8GW</span>
+          </div>
+        </div>
+
+        <div class="custom-pin-row">
+          <input type="text" id="custom-pin-input" class="custom-pin-input font-mono" placeholder="Enter custom Postal Code / PIN" maxlength="10">
+          <button type="button" id="save-location-btn" class="btn-primary font-mono">APPLY LOCATION</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. LANGUAGE & CURRENCY SELECTOR MODAL -->
+  <div id="lang-curr-modal-overlay" class="modal-overlay">
+    <div class="modal-window lang-curr-modal-box">
+      <button type="button" id="lang-curr-modal-close" class="modal-close-btn" aria-label="Close">&times;</button>
+      <div class="lang-curr-modal-inner">
+        <h3 class="font-display" style="font-size: 1.4rem; color: #ffffff; margin-bottom: 0.5rem;">REGIONAL PREFERENCES</h3>
+        <p class="font-body" style="font-size: 0.85rem; color: var(--text-medium); margin-bottom: 1.75rem;">
+          Select your preferred browsing language and transactional currency. Prices will recalculate instantaneously.
+        </p>
+
+        <!-- Currency Picker -->
+        <h4 class="font-mono" style="font-size: 0.75rem; color: var(--text-low); letter-spacing: 0.1em; margin-bottom: 0.75rem;">TRANSACTIONAL CURRENCY</h4>
+        <div class="currency-picker-grid font-mono">
+          <div class="currency-select-card active" data-currency="USD">
+            <strong>USD ($)</strong>
+            <span>United States Dollar</span>
+          </div>
+          <div class="currency-select-card" data-currency="EUR">
+            <strong>EUR (€)</strong>
+            <span>Eurozone Currency</span>
+          </div>
+          <div class="currency-select-card" data-currency="GBP">
+            <strong>GBP (£)</strong>
+            <span>British Pound</span>
+          </div>
+          <div class="currency-select-card" data-currency="INR">
+            <strong>INR (₹)</strong>
+            <span>Indian Rupee</span>
+          </div>
+          <div class="currency-select-card" data-currency="JPY">
+            <strong>JPY (¥)</strong>
+            <span>Japanese Yen</span>
+          </div>
+        </div>
+
+        <!-- Language Picker -->
+        <h4 class="font-mono" style="font-size: 0.75rem; color: var(--text-low); letter-spacing: 0.1em; margin: 1.5rem 0 0.75rem;">BROWSING LANGUAGE</h4>
+        <div class="lang-picker-grid font-mono">
+          <div class="lang-select-card active" data-lang="EN">
+            <strong>EN &bull; English</strong>
+            <span>United States</span>
+          </div>
+          <div class="lang-select-card" data-lang="DE">
+            <strong>DE &bull; Deutsch</strong>
+            <span>Deutschland</span>
+          </div>
+          <div class="lang-select-card" data-lang="FR">
+            <strong>FR &bull; Français</strong>
+            <span>France</span>
+          </div>
+          <div class="lang-select-card" data-lang="JA">
+            <strong>JA &bull; 日本語</strong>
+            <span>日本</span>
+          </div>
+          <div class="lang-select-card" data-lang="HI">
+            <strong>HI &bull; हिन्दी</strong>
+            <span>भारत</span>
+          </div>
+        </div>
+
+        <button type="button" id="save-lang-curr-btn" class="btn-primary font-mono" style="width: 100%; margin-top: 2rem;">
+          SAVE REGIONAL PREFERENCES
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. ACCOUNT & ORDERS MODAL -->
+  <div id="account-modal-overlay" class="modal-overlay">
+    <div class="modal-window account-modal-box">
+      <button type="button" id="account-modal-close" class="modal-close-btn" aria-label="Close">&times;</button>
+      <div class="account-modal-inner">
+        <div class="account-header-strip">
+          <div>
+            <span class="font-mono" style="font-size: 0.7rem; color: var(--text-low); letter-spacing: 0.14em;">ATELIER ACCOUNT</span>
+            <h2 class="font-display" style="font-size: 1.6rem; color: #ffffff;">Alexander Wright</h2>
+          </div>
+          <div class="prime-membership-chip font-mono">
+            <span class="prime-dot"></span>
+            <span>PRIME ATELIER // ACTIVE THRU 2027</span>
+          </div>
+        </div>
+
+        <!-- Account Tab Switchers -->
+        <div class="account-tabs-bar font-mono">
+          <button type="button" class="account-tab-btn active" data-tab="orders">DISPATCH &amp; ORDERS</button>
+          <button type="button" class="account-tab-btn" data-tab="profile">EXECUTIVE PROFILE</button>
+          <button type="button" class="account-tab-btn" data-tab="addresses">SAVED ADDRESSES</button>
+          <button type="button" class="account-tab-btn" data-tab="payments">PAYMENT METHODS</button>
+        </div>
+
+        <!-- Tab: Orders -->
+        <div id="tab-pane-orders" class="account-tab-pane active">
+          <div id="account-orders-list" class="orders-feed">
+            <!-- Injected by account.js -->
+          </div>
+        </div>
+
+        <!-- Tab: Profile -->
+        <div id="tab-pane-profile" class="account-tab-pane">
+          <div class="profile-details-card font-mono">
+            <div class="profile-field">
+              <span class="k">ACCOUNT TIER</span>
+              <span class="v">Executive Atelier Patron &bull; Priority Airfreight Routing</span>
+            </div>
+            <div class="profile-field">
+              <span class="k">REGISTERED EMAIL</span>
+              <span class="v">a.wright@atelier-arch.com</span>
+            </div>
+            <div class="profile-field">
+              <span class="k">MEMBER SINCE</span>
+              <span class="v">November 2021 (5 Years)</span>
+            </div>
+            <div class="profile-field">
+              <span class="k">COURIER DISPATCH SPEED</span>
+              <span class="v">Guaranteed Sub-24 Hour Prime Delivery</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Addresses -->
+        <div id="tab-pane-addresses" class="account-tab-pane">
+          <div class="addresses-pane-grid font-mono">
+            <div class="address-box active">
+              <span class="def-badge">DEFAULT DISPATCH DESTINATION</span>
+              <h4>PRIMARY ATELIER STUDIO</h4>
+              <p>Studio 4B, 18 Design District<br>New Delhi, 110001<br>India</p>
+            </div>
+            <div class="address-box">
+              <h4>PENTHOUSE RESIDENCE</h4>
+              <p>Residence 32, Sky Enclave<br>Mumbai, 400050<br>India</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Payments -->
+        <div id="tab-pane-payments" class="account-tab-pane">
+          <div class="payments-pane-list font-mono">
+            <div class="payment-method-row">
+              <div>
+                <strong>Apple Pay Express</strong>
+                <p>Default 1-Tap Biometric Checkout</p>
+              </div>
+              <span class="badge-active">ACTIVE</span>
+            </div>
+            <div class="payment-method-row">
+              <div>
+                <strong>Black Titanium Corporate Card</strong>
+                <p>Ending in 8842 &bull; Exp 09/29</p>
+              </div>
+              <span class="badge-active">VERIFIED</span>
+            </div>
+            <div class="payment-method-row">
+              <div>
+                <strong>Instant UPI Direct</strong>
+                <p>alexander@okicici &bull; 0% Surcharge</p>
+              </div>
+              <span class="badge-active">CONNECTED</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. 1-TAP SLIDEOUT CART DRAWER -->
+  <div id="cart-overlay" class="cart-overlay"></div>
+  <aside id="cart-drawer" class="cart-drawer" aria-label="Shopping Bag">
+    <div class="cart-header">
+      <h3 class="cart-heading font-display">YOUR ATELIER BAG</h3>
+      <button type="button" id="cart-close-btn" class="cart-close-btn" aria-label="Close Bag">&times;</button>
+    </div>
+
+    <!-- Prime Express Progress -->
+    <div class="shipping-meter-box">
+      <div id="shipping-notice" class="shipping-notice font-body">
+        <strong>PRIME EXPRESS UNLOCKED</strong> &bull; Free Next-Day Courier
+      </div>
+      <div class="shipping-track">
+        <div id="shipping-progress-bar" class="shipping-bar"></div>
+      </div>
+    </div>
+
+    <!-- Items List -->
+    <div id="cart-items-list" class="cart-items-list">
+      <!-- Populated dynamically by store.js -->
+    </div>
+
+    <!-- Cart Footer -->
+    <div class="cart-footer">
+      <div class="summary-row font-body">
+        <span>Subtotal</span>
+        <span id="cart-subtotal" class="font-mono">$0</span>
+      </div>
+      <div class="summary-row font-body">
+        <span>Prime Express Airfreight</span>
+        <span class="font-mono" style="color: #ffffff;">COMPLIMENTARY</span>
+      </div>
+      <div class="summary-row total font-body">
+        <span>Total</span>
+        <span id="cart-total" class="font-mono">$0</span>
+      </div>
+
+      <button type="button" id="checkout-btn" class="checkout-btn font-mono">
+        <span>1-TAP PRIME CHECKOUT</span>
+      </button>
+
+      <span class="cart-guarantee font-mono">SECURE 256-BIT DISPATCH &bull; 30-DAY COMPLIMENTARY RETURN</span>
+    </div>
+  </aside>
+
+  <!-- 11. QUICK VIEW SPECIFICATION MODAL -->
+  <div id="quickview-modal-overlay" class="modal-overlay">
+    <div class="modal-window">
+      <button type="button" id="quickview-close-btn" class="modal-close-btn" aria-label="Close Modal">&times;</button>
+      <div id="quickview-modal-content">
+        <!-- Populated dynamically by store.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 12. MINIMALIST FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="font-display" style="font-size: 1.15rem; font-weight: 800; color: #ffffff;">AMZN. ATELIER</span>
+          <p class="font-body" style="font-size: 0.85rem; color: var(--text-medium); line-height: 1.5;">
+            An architectural study in minimalist commerce. Stripped of promotional clutter, ads, and noise. Dedicated to functional precision and industrial design.
+          </p>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-col font-body">
+            <h5 class="font-mono">DEPARTMENTS</h5>
+            <a href="#" class="dept-nav-link" data-category="Acoustics">Acoustics</a>
+            <a href="#" class="dept-nav-link" data-category="Optics">Optics</a>
+            <a href="#" class="dept-nav-link" data-category="Synthesizers">Synthesizers</a>
+            <a href="#" class="dept-nav-link" data-category="Industrial Living">Industrial Living</a>
+          </div>
+          <div class="footer-col font-body">
+            <h5 class="font-mono">ATELIER LOGISTICS</h5>
+            <a href="#" onclick="window.AtelierAccount.openModal('orders'); return false;">Prime 24h Express</a>
+            <a href="#" onclick="window.AtelierAccount.openModal('orders'); return false;">Airfreight Telemetry</a>
+            <a href="#" onclick="window.AtelierAccount.openModal('addresses'); return false;">Global Addresses</a>
+            <a href="#" onclick="window.AtelierAccount.openModal('orders'); return false;">Returns Portal</a>
+          </div>
+          <div class="footer-col font-body">
+            <h5 class="font-mono">STANDARDS</h5>
+            <a href="#" onclick="alert('Dieter Rams 10 Principles verified across all catalog selections.'); return false;">Dieter Rams Manifesto</a>
+            <a href="#" onclick="alert('All materials authenticated with verified provenance.'); return false;">Material Provenance</a>
+            <a href="#" onclick="alert('Zero dark patterns, zero countdown timers, zero deceptive pricing.'); return false;">Zero Dark Patterns</a>
+            <a href="#" onclick="alert('Your telemetry is strictly encrypted and never sold.'); return false;">Privacy Architecture</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom font-mono">
+        <div>&copy; 2026 AMAZON ATELIER ARCHITECTURE. ALL RIGHTS RESERVED.</div>
+        <div>STRICT MINIMALISM &bull; ZERO EMOJIS &bull; SUB-SECOND HEADLESS</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/products-data.js"></script>
+  <script src="assets/js/currency.js"></script>
+  <script src="assets/js/account.js"></script>
+  <script src="assets/js/filters.js"></script>
+  <script src="assets/js/tilt.js"></script>
+  <script src="assets/js/store.js"></script>
+
+  <!-- =========================================================================
+       DEDICATED MOBILE BOTTOM NAVIGATION DOCK (VISIBLE ONLY ON MOBILE <= 860px)
+       ========================================================================= -->
+  <nav class="mobile-bottom-nav">
+    <button type="button" class="mobile-nav-item active" data-action="shop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+      <span>Shop</span>
+    </button>
+    <button type="button" class="mobile-nav-item" data-action="departments">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+        <polyline points="2 17 12 22 22 17"></polyline>
+        <polyline points="2 12 12 17 22 12"></polyline>
+      </svg>
+      <span>Depts</span>
+    </button>
+    <button type="button" class="mobile-nav-item" data-action="filters">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="4" y1="21" x2="4" y2="14"></line>
+        <line x1="4" y1="10" x2="4" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12" y2="3"></line>
+        <line x1="20" y1="21" x2="20" y2="16"></line>
+        <line x1="20" y1="12" x2="20" y2="3"></line>
+        <line x1="1" y1="14" x2="7" y2="14"></line>
+        <line x1="9" y1="8" x2="15" y2="8"></line>
+        <line x1="17" y1="16" x2="23" y2="16"></line>
+      </svg>
+      <span>Filters</span>
+    </button>
+    <button type="button" class="mobile-nav-item" data-action="account">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      <span>Account</span>
+    </button>
+    <button type="button" class="mobile-nav-item" data-action="bag">
+      <div class="mobile-bag-icon-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+        <span class="mobile-nav-badge cart-count-badge">0</span>
+      </div>
+      <span>Bag</span>
+    </button>
+  </nav>
+
+  <!-- =========================================================================
+       DEDICATED MOBILE FILTER BOTTOM SHEET
+       ========================================================================= -->
+  <div id="mobile-filter-overlay" class="modal-overlay"></div>
+  <aside id="mobile-filter-sheet" class="mobile-filter-sheet" aria-label="Mobile Filters">
+    <div class="mobile-sheet-handle-bar">
+      <div class="sheet-handle"></div>
+    </div>
+    <div class="mobile-sheet-header">
+      <span class="mobile-sheet-title font-display">FILTERS &amp; PARAMETERS</span>
+      <button type="button" id="mobile-filter-close" class="modal-close-btn" aria-label="Close Filters">&times;</button>
+    </div>
+    <div class="mobile-sheet-body">
+      <!-- Fulfillment Toggle -->
+      <div class="filter-group">
+        <h4 class="filter-group-title font-mono">FULFILLMENT</h4>
+        <label class="toggle-row">
+          <input type="checkbox" id="mobile-filter-prime">
+          <span class="toggle-slider"></span>
+          <span class="toggle-label font-mono">Prime 24h Express Only</span>
+        </label>
+        <label class="toggle-row">
+          <input type="checkbox" id="mobile-filter-stock">
+          <span class="toggle-slider"></span>
+          <span class="toggle-label font-mono">In-Stock Only</span>
+        </label>
+      </div>
+
+      <!-- Price Spectrum -->
+      <div class="filter-group">
+        <h4 class="filter-group-title font-mono">PRICE SPECTRUM</h4>
+        <div class="mobile-price-presets-grid font-mono">
+          <button type="button" class="mobile-preset-btn active" data-preset="all">All Values</button>
+          <button type="button" class="mobile-preset-btn" data-preset="under500">&lt; $500</button>
+          <button type="button" class="mobile-preset-btn" data-preset="500to1500">$500 - $1.5K</button>
+          <button type="button" class="mobile-preset-btn" data-preset="1500to5000">$1.5K - $5K</button>
+          <button type="button" class="mobile-preset-btn" data-preset="over5000">&gt; $5K</button>
+        </div>
+      </div>
+
+      <!-- Brands -->
+      <div class="filter-group">
+        <h4 class="filter-group-title font-mono">ATELIER HOUSES</h4>
+        <div id="mobile-brands-list" class="filter-checkbox-list font-mono"></div>
+      </div>
+
+      <!-- Materials -->
+      <div class="filter-group">
+        <h4 class="filter-group-title font-mono">MATERIAL PROVENANCE</h4>
+        <div id="mobile-materials-list" class="filter-checkbox-list font-mono"></div>
+      </div>
+    </div>
+
+    <!-- Sticky Bottom Sheet Actions -->
+    <div class="mobile-sheet-footer">
+      <button type="button" id="mobile-filter-reset" class="mobile-sheet-reset-btn font-mono">RESET</button>
+      <button type="button" id="mobile-filter-apply" class="mobile-sheet-apply-btn font-mono">APPLY FILTERS</button>
+    </div>
+  </aside>
+
+  <script src="assets/js/mobile-ui.js"></script>
+</body>
+</html>
