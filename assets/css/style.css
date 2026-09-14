@@ -2990,3 +2990,201 @@ footer {
     font-size: 0.88rem;
   }
 }
+
+/* ==========================================================================
+   14. CONCEPT DEMO DISCLAIMER MODAL STYLES (OBSIDIAN DARK LUXURY)
+   ========================================================================== */
+.demo-disclaimer-box {
+  max-width: 680px;
+  width: 92vw;
+  background: #0d0f14;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95);
+  position: relative;
+}
+
+.demo-disclaimer-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.demo-kicker-strip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.72rem;
+  color: #e5a93c;
+  letter-spacing: 0.14em;
+  background: rgba(229, 169, 60, 0.08);
+  border: 1px solid rgba(229, 169, 60, 0.25);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-xs);
+  margin-bottom: 0.85rem;
+  align-self: flex-start;
+}
+
+.demo-heading {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 0.35rem;
+}
+
+.demo-subhead {
+  font-size: 0.72rem;
+  color: var(--text-low);
+  letter-spacing: 0.14em;
+  margin-bottom: 1.35rem;
+}
+
+.demo-callout-panel {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-left: 3px solid #e5a93c;
+  border-radius: var(--radius-xs);
+  padding: 1.2rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.35rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #d4d4d8;
+}
+
+.demo-notice-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #e5a93c;
+  letter-spacing: 0.12em;
+}
+
+.demo-warn-line {
+  color: #f4f4f5;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.demo-telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.65rem;
+  margin-bottom: 1.5rem;
+}
+
+.demo-tele-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--radius-xs);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.demo-tele-card .tele-lbl {
+  font-size: 0.62rem;
+  color: var(--text-low);
+  letter-spacing: 0.1em;
+}
+
+.demo-tele-card .tele-val {
+  font-size: 0.75rem;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.demo-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.btn-primary-demo {
+  flex: 1 1 180px;
+  padding: 0.85rem 1.25rem;
+  background: #ffffff;
+  color: #08090b;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  border: none;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: all var(--ease-fast);
+}
+
+.btn-primary-demo:hover {
+  background: #e4e4e7;
+  transform: translateY(-1px);
+}
+
+.btn-secondary-demo {
+  flex: 1 1 180px;
+  padding: 0.85rem 1.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: all var(--ease-fast);
+}
+
+.btn-secondary-demo:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-wa-demo {
+  flex: 1 1 180px;
+  padding: 0.85rem 1.25rem;
+  background: #25d366;
+  color: #08090b;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  border: none;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: all var(--ease-fast);
+}
+
+.btn-wa-demo:hover {
+  background: #20ba59;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 600px) {
+  .demo-disclaimer-box {
+    padding: 1.5rem 1.25rem;
+  }
+  .demo-telemetry-grid {
+    grid-template-columns: 1fr;
+  }
+  .demo-actions-row {
+    flex-direction: column;
+  }
+  .demo-actions-row > * {
+    width: 100%;
+    flex: none;
+  }
+}

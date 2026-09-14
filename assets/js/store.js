@@ -646,9 +646,53 @@
       heroAddBtn.onclick = () => addToCart(PRODUCTS_DATA[0].id, 1);
     }
 
+    // Demo Disclaimer Logic
+    function initDemoDisclaimer() {
+      const overlay = document.getElementById('demo-disclaimer-overlay');
+      const closeBtn = document.getElementById('demo-disclaimer-close');
+      const enterBtn = document.getElementById('btn-demo-enter');
+
+      if (!overlay) return;
+
+      function dismiss() {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+        try {
+          sessionStorage.setItem('amazon_atelier_disclaimer_dismissed', '1');
+        } catch (e) {}
+      }
+
+      if (closeBtn) closeBtn.addEventListener('click', dismiss);
+      if (enterBtn) enterBtn.addEventListener('click', dismiss);
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) dismiss();
+      });
+
+      let isDismissed = false;
+      try {
+        isDismissed = sessionStorage.getItem('amazon_atelier_disclaimer_dismissed') === '1';
+      } catch (e) {}
+
+      if (!isDismissed) {
+        setTimeout(() => {
+          overlay.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        }, 400);
+      }
+    }
+
     // Global keyboard shortcuts
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        const disclaimerOverlay = document.getElementById('demo-disclaimer-overlay');
+        if (disclaimerOverlay && disclaimerOverlay.classList.contains('open')) {
+          disclaimerOverlay.classList.remove('open');
+          document.body.style.overflow = '';
+          try {
+            sessionStorage.setItem('amazon_atelier_disclaimer_dismissed', '1');
+          } catch (err) {}
+          return;
+        }
         closeCart();
         closeQuickView();
         closeLocationModal();
@@ -668,6 +712,7 @@
     renderCatalog();
     updateCartUI();
     updateDeliveryLocation('New Delhi', '110001');
+    initDemoDisclaimer();
   }
 
   if (document.readyState === 'loading') {
