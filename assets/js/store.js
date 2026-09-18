@@ -596,23 +596,73 @@
       gridEl.addEventListener('click', (e) => {
         const addBtn = e.target.closest('.add-to-bag-btn');
         if (addBtn) {
+          e.stopPropagation();
           addToCart(addBtn.dataset.id, 1);
           return;
         }
 
         const qvBtn = e.target.closest('.quick-view-btn');
         if (qvBtn) {
+          e.stopPropagation();
           openQuickView(qvBtn.dataset.id);
           return;
         }
 
-        const imgBox = e.target.closest('.card-image-box');
-        if (imgBox) {
-          const card = imgBox.closest('.product-card');
-          if (card) openQuickView(card.dataset.productId);
+        const card = e.target.closest('.product-card');
+        if (card && card.dataset.productId) {
+          openQuickView(card.dataset.productId);
         }
       });
     }
+
+    // Drag-to-Scroll for Horizontal Carousels & Subnavs
+    function initDragToScroll(selector) {
+      const sliders = document.querySelectorAll(selector);
+      sliders.forEach(slider => {
+        let isDown = false;
+        let startX = 0;
+        let scrollLeft = 0;
+        let hasMoved = false;
+
+        slider.addEventListener('mousedown', (e) => {
+          isDown = true;
+          hasMoved = false;
+          slider.classList.add('dragging');
+          startX = e.pageX - slider.offsetLeft;
+          scrollLeft = slider.scrollLeft;
+        });
+
+        slider.addEventListener('mouseleave', () => {
+          isDown = false;
+          slider.classList.remove('dragging');
+        });
+
+        slider.addEventListener('mouseup', () => {
+          isDown = false;
+          slider.classList.remove('dragging');
+        });
+
+        slider.addEventListener('mousemove', (e) => {
+          if (!isDown) return;
+          const x = e.pageX - slider.offsetLeft;
+          const walk = (x - startX) * 1.5;
+          if (Math.abs(walk) > 4) {
+            hasMoved = true;
+            e.preventDefault();
+            slider.scrollLeft = scrollLeft - walk;
+          }
+        });
+
+        slider.addEventListener('click', (e) => {
+          if (hasMoved) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, true);
+      });
+    }
+
+    initDragToScroll('.subnav-bar, .mobile-quick-chips, .mobile-filter-bar, .account-tabs-bar');
 
     // Cart delegation
     if (cartItemsList) {

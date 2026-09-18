@@ -902,11 +902,32 @@ img {
   justify-content: space-between;
   transition: box-shadow 0.25s ease, transform 0.25s ease;
   position: relative;
+  cursor: pointer;
 }
 
 .product-card:hover {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   transform: translateY(-2px);
+}
+
+.card-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 5;
+}
+
+/* Drag to Scroll Utilities */
+.subnav-bar, .mobile-quick-chips, .mobile-filter-bar, .account-tabs-bar {
+  cursor: grab;
+}
+
+.subnav-bar.dragging, .mobile-quick-chips.dragging, .mobile-filter-bar.dragging, .account-tabs-bar.dragging {
+  cursor: grabbing;
+  user-select: none;
 }
 
 /* Badges */
@@ -1360,6 +1381,8 @@ img {
   gap: 0.3rem;
   font-size: 0.72rem;
   color: #565959;
+}
+
 /* Cart Curated Add-ons Section */
 .cart-addons-section {
   padding: 1rem 1.25rem;

@@ -30,6 +30,8 @@
 
       // 3. Price filter
       if (filterState.priceRange === 'under500' && p.price >= 500) return false;
+      if (filterState.priceRange === '500to2000' && (p.price < 500 || p.price > 2000)) return false;
+      if (filterState.priceRange === 'above2000' && p.price <= 2000) return false;
       if (filterState.priceRange === '500to1500' && (p.price < 500 || p.price > 1500)) return false;
       if (filterState.priceRange === '1500to5000' && (p.price < 1500 || p.price > 5000)) return false;
       if (filterState.priceRange === 'over5000' && p.price <= 5000) return false;
