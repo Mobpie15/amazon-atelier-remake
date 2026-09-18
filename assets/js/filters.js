@@ -236,7 +236,7 @@
     });
 
     // 7. Departments Mega Flyout Drawer
-    const deptTrigger = document.getElementById('all-departments-trigger');
+    const deptTriggers = document.querySelectorAll('#all-departments-trigger, #departments-menu-btn');
     const deptDrawer = document.getElementById('departments-drawer');
     const deptClose = document.getElementById('departments-drawer-close');
     const deptOverlay = document.getElementById('departments-drawer-overlay');
@@ -253,18 +253,84 @@
       document.body.style.overflow = '';
     };
 
-    if (deptTrigger) deptTrigger.onclick = openDept;
+    deptTriggers.forEach(btn => {
+      if (btn) btn.onclick = openDept;
+    });
     if (deptClose) deptClose.onclick = closeDept;
     if (deptOverlay) deptOverlay.onclick = closeDept;
 
-    // Mobile Filter Drawer
-    const mobileFilterTrigger = document.getElementById('mobile-filter-trigger');
-    const filterSidebar = document.getElementById('catalog-sidebar');
-    if (mobileFilterTrigger && filterSidebar) {
-      mobileFilterTrigger.onclick = () => {
-        filterSidebar.classList.toggle('mobile-open');
+    // Dept menu internal modal links
+    const deptAccountLink = document.getElementById('dept-account-link');
+    if (deptAccountLink) {
+      deptAccountLink.onclick = () => {
+        closeDept();
+        const accModal = document.getElementById('account-modal-overlay');
+        if (accModal) accModal.classList.add('open');
       };
     }
+
+    const deptCurrencyLink = document.getElementById('dept-currency-link');
+    if (deptCurrencyLink) {
+      deptCurrencyLink.onclick = () => {
+        closeDept();
+        const currModal = document.getElementById('lang-curr-modal-overlay');
+        if (currModal) currModal.classList.add('open');
+      };
+    }
+
+    const deptLocationLink = document.getElementById('dept-location-link');
+    if (deptLocationLink) {
+      deptLocationLink.onclick = () => {
+        closeDept();
+        const locModal = document.getElementById('location-modal-overlay');
+        if (locModal) locModal.classList.add('open');
+      };
+    }
+
+    // 8. Mobile Filter Drawer & Backdrop
+    const mobileFilterTrigger = document.getElementById('mobile-filter-trigger');
+    const filterSidebar = document.getElementById('catalog-sidebar');
+    const filterBackdrop = document.getElementById('filter-sidebar-backdrop');
+    const mobileFilterClose = document.getElementById('mobile-filter-close');
+    const mobileFilterApply = document.getElementById('mobile-filter-apply-btn');
+
+    const openMobileFilter = () => {
+      if (filterSidebar) filterSidebar.classList.add('mobile-open');
+      if (filterBackdrop) filterBackdrop.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeMobileFilter = () => {
+      if (filterSidebar) filterSidebar.classList.remove('mobile-open');
+      if (filterBackdrop) filterBackdrop.classList.remove('active');
+      document.body.style.overflow = '';
+    };
+
+    if (mobileFilterTrigger) mobileFilterTrigger.onclick = openMobileFilter;
+    if (mobileFilterClose) mobileFilterClose.onclick = closeMobileFilter;
+    if (mobileFilterApply) mobileFilterApply.onclick = closeMobileFilter;
+    if (filterBackdrop) filterBackdrop.onclick = closeMobileFilter;
+
+    // 9. Mobile Quick Chips Category Sync
+    const quickChips = document.querySelectorAll('.quick-chip-pill');
+    quickChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        quickChips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        const cat = chip.dataset.category || 'All';
+        
+        // Sync with desktop pills
+        document.querySelectorAll('.category-pill-btn').forEach(btn => {
+          if (btn.dataset.category === cat) btn.classList.add('active');
+          else btn.classList.remove('active');
+        });
+
+        const catSelect = document.getElementById('header-category-select');
+        if (catSelect) catSelect.value = cat;
+
+        window.dispatchEvent(new CustomEvent('atelier-category-selected', { detail: { category: cat } }));
+      });
+    });
   }
 
   window.AtelierFilters = {

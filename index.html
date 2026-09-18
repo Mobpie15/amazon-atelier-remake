@@ -39,11 +39,20 @@
   <header class="header-bar" id="main-header">
     <div class="header-main-row">
       
-      <!-- Amazon Smile Logo -->
-      <a href="index.html" class="brand-anchor" aria-label="Amazon Home">
-        <img src="assets/images/amazon-logo.svg" alt="Amazon.com" class="amzn-logo-img">
-        <span class="brand-sub-badge font-mono">ATELIER</span>
-      </a>
+      <!-- Brand & Mobile Menu Wrap -->
+      <div class="header-brand-wrap">
+        <button type="button" class="mobile-menu-btn" id="all-departments-trigger" aria-label="Open Navigation Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <a href="index.html" class="brand-anchor" aria-label="Amazon Home">
+          <img src="assets/images/amazon-logo.svg" alt="Amazon.com" class="amzn-logo-img">
+          <span class="brand-sub-badge font-mono">ATELIER</span>
+        </a>
+      </div>
 
       <!-- Location Selector -->
       <div class="header-location-btn" id="location-trigger-btn" title="Change delivery location">
@@ -60,16 +69,16 @@
       <!-- Omnibox Search Bar -->
       <div class="header-search-wrap">
         <select id="header-category-select" class="search-category-select font-mono" aria-label="Select Category">
-          <option value="All">All Departments</option>
-          <option value="Synthesizers">Synthesizers &amp; Audio</option>
-          <option value="Acoustics">Acoustics &amp; Headphones</option>
-          <option value="Optics">Optics &amp; Cameras</option>
-          <option value="Timepieces">Horology &amp; Watches</option>
-          <option value="Apparel & Scent">Haute Couture &amp; Scent</option>
-          <option value="Industrial Living">Architecture &amp; Living</option>
+          <option value="All">All</option>
+          <option value="Synthesizers">Audio</option>
+          <option value="Acoustics">Acoustics</option>
+          <option value="Optics">Optics</option>
+          <option value="Timepieces">Horology</option>
+          <option value="Apparel & Scent">Couture</option>
+          <option value="Industrial Living">Living</option>
         </select>
         
-        <input type="text" id="omni-search-input" class="search-input-field" placeholder="Search curated architectural objects, acoustics, luxury apparel..." autocomplete="off">
+        <input type="text" id="omni-search-input" class="search-input-field" placeholder="Search curated architectural objects, acoustics..." autocomplete="off">
         
         <button type="button" id="omni-search-btn" class="search-submit-btn" aria-label="Execute Search">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F1111" stroke-width="2.5">
@@ -86,7 +95,7 @@
       <div class="header-right-actions">
         
         <!-- Language / Currency -->
-        <div class="header-nav-item" id="currency-trigger-btn" title="Change Language & Currency">
+        <div class="header-nav-item nav-hide-sm" id="currency-trigger-btn" title="Change Language & Currency">
           <span class="nav-item-top font-mono">EN / USD</span>
           <span class="nav-item-bottom">Global ($)</span>
         </div>
@@ -98,7 +107,7 @@
         </div>
 
         <!-- Returns & Orders -->
-        <a href="#catalog" class="header-nav-item">
+        <a href="#catalog" class="header-nav-item nav-hide-sm">
           <span class="nav-item-top">Returns</span>
           <span class="nav-item-bottom">&amp; Orders</span>
         </a>
@@ -118,6 +127,16 @@
 
       </div>
 
+    </div>
+
+    <!-- Mobile Sub-Location Strip (Visible on mobile screens) -->
+    <div class="mobile-sub-location-strip font-mono" id="mobile-location-strip">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+        <circle cx="12" cy="10" r="3"></circle>
+      </svg>
+      <span>Deliver to Alexander &bull; New Delhi 110001</span>
+      <span style="font-size: 0.7rem; color: #ff9900;">&rsaquo;</span>
     </div>
 
     <!-- =========================================================================
@@ -205,11 +224,42 @@
        04. MAIN PRODUCTS CATALOG & FACETED FILTERS
        ========================================================================= -->
   <main class="container" id="catalog">
+    
+    <!-- Mobile Filter & Category Chips Bar (Visible on <= 1024px) -->
+    <div class="mobile-filter-bar font-mono">
+      <button type="button" class="mobile-filter-toggle-btn" id="mobile-filter-trigger" aria-label="Open Filter Drawer">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="4" y1="21" x2="4" y2="14"></line>
+          <line x1="4" y1="10" x2="4" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12" y2="3"></line>
+          <line x1="20" y1="21" x2="20" y2="16"></line>
+          <line x1="20" y1="12" x2="20" y2="3"></line>
+        </svg>
+        <span>FILTERS</span>
+      </button>
+
+      <div class="mobile-quick-chips">
+        <button type="button" class="quick-chip-pill active" data-category="All">All</button>
+        <button type="button" class="quick-chip-pill" data-category="Synthesizers">Audio</button>
+        <button type="button" class="quick-chip-pill" data-category="Acoustics">Acoustics</button>
+        <button type="button" class="quick-chip-pill" data-category="Timepieces">Horology</button>
+        <button type="button" class="quick-chip-pill" data-category="Apparel">Couture</button>
+        <button type="button" class="quick-chip-pill" data-category="Optics">Optics</button>
+      </div>
+    </div>
+
+    <!-- Mobile Filter Backdrop -->
+    <div class="filter-sidebar-backdrop" id="filter-sidebar-backdrop"></div>
+
     <div class="catalog-main-layout">
       
-      <!-- Left Filter Sidebar -->
-      <aside class="filter-sidebar font-body" aria-label="Catalog Filters">
-        <h2 class="sidebar-heading font-display">Filter Results</h2>
+      <!-- Left Filter Sidebar / Mobile Slide-In Drawer -->
+      <aside class="filter-sidebar font-body" id="catalog-sidebar" aria-label="Catalog Filters">
+        <div class="sidebar-header-row">
+          <h2 class="sidebar-heading font-display">Filter Results</h2>
+          <button type="button" class="sidebar-mobile-close" id="mobile-filter-close" aria-label="Close Filters">&times;</button>
+        </div>
 
         <!-- Prime Filter -->
         <div class="filter-block">
@@ -265,6 +315,8 @@
             <label class="filter-checkbox-label"><input type="radio" name="price-filter" value="above2000"> $2,000 &amp; Above</label>
           </div>
         </div>
+
+        <button type="button" class="btn-apply-filters-mobile font-mono" id="mobile-filter-apply-btn">SHOW RESULTS</button>
 
       </aside>
 
@@ -706,6 +758,41 @@
         <p>&copy; 2026 Amazon.com, Inc. or its affiliates &bull; Engineered by Mobpie &bull; Conceptual Showcase Demo</p>
       </div>
     </div>
+  </footer>
+
+  <!-- =========================================================================
+       13. DEPARTMENTS MEGA FLYOUT DRAWER
+       ========================================================================= -->
+  <div class="departments-drawer-overlay" id="departments-drawer-overlay"></div>
+  <aside class="departments-drawer font-body" id="departments-drawer" role="dialog" aria-label="Departments Menu">
+    <div class="dept-header">
+      <div class="dept-title font-display">
+        <span>Hello, Mobpie</span>
+      </div>
+      <button type="button" class="modal-close-btn" id="departments-drawer-close" aria-label="Close Menu" style="position: static; color: #ffffff; font-size: 1.5rem;">&times;</button>
+    </div>
+    <div class="dept-list font-mono">
+      <div class="dept-section-label">DIGITAL AUDIO &amp; DEVICES</div>
+      <a href="#catalog" class="dept-nav-link" data-cat="Synthesizers">Synthesizers &amp; Sound Workstations</a>
+      <a href="#catalog" class="dept-nav-link" data-cat="Acoustics">Acoustics &amp; Studio Reference</a>
+      <a href="#catalog" class="dept-nav-link" data-cat="Optics">Optics &amp; Rangefinders</a>
+      
+      <div class="dept-section-label">SHOP BY LUXURY DEPARTMENT</div>
+      <a href="#catalog" class="dept-nav-link" data-cat="Timepieces">Luxury Horology &amp; Watches</a>
+      <a href="#catalog" class="dept-nav-link" data-cat="Apparel">Haute Couture &amp; Silhouettes</a>
+      <a href="#catalog" class="dept-nav-link" data-cat="Living">Architecture &amp; Living</a>
+      
+      <div class="dept-section-label">PROGRAMS &amp; FEATURES</div>
+      <a href="#catalog" class="dept-nav-link">Amazon Prime 24h Airfreight</a>
+      <a href="#catalog" class="dept-nav-link">Atelier Commission Program</a>
+      <a href="#catalog" class="dept-nav-link">Curated Gift Registries</a>
+      
+      <div class="dept-section-label">HELP &amp; SETTINGS</div>
+      <a href="javascript:void(0)" class="dept-nav-link" id="dept-account-link">Your Account &amp; Orders</a>
+      <a href="javascript:void(0)" class="dept-nav-link" id="dept-currency-link">Currency &amp; Language Settings</a>
+      <a href="javascript:void(0)" class="dept-nav-link" id="dept-location-link">Change Delivery Location</a>
+    </div>
+  </aside>
 
   <!-- Floating Toast Notification Container -->
   <div id="toast-container" class="toast-container font-mono"></div>

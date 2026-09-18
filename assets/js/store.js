@@ -572,6 +572,13 @@
       filterAndRender();
     });
 
+    // Listen to Mobile Quick Chip / External Category Selection
+    window.addEventListener('atelier-category-selected', (e) => {
+      state.activeCategory = e.detail.category || 'All';
+      updateActivePill();
+      filterAndRender();
+    });
+
     // Listen to Currency Change
     window.addEventListener('atelier-currency-changed', () => {
       renderCatalog();
@@ -640,6 +647,8 @@
 
     // Location Selector Triggers
     if (locationTriggerBtn) locationTriggerBtn.onclick = openLocationModal;
+    const mobileLocationStrip = document.getElementById('mobile-location-strip');
+    if (mobileLocationStrip) mobileLocationStrip.onclick = openLocationModal;
     if (locationModalClose) locationModalClose.onclick = closeLocationModal;
     if (locationModalOverlay) {
       locationModalOverlay.onclick = (e) => {
