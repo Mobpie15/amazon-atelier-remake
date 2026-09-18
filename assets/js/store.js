@@ -26,11 +26,13 @@
   };
 
   // DOM Elements
-  const gridEl = document.getElementById('products-grid');
-  const searchInput = document.getElementById('search-input');
-  const categoryPills = document.querySelectorAll('.category-pill');
-  const sortSelect = document.getElementById('sort-select');
-  const resultsCountEl = document.getElementById('results-count');
+  const gridEl = document.getElementById('products-container') || document.getElementById('products-grid');
+  const searchInput = document.getElementById('omni-search-input') || document.getElementById('search-input');
+  const categoryPills = document.querySelectorAll('.category-pill-btn, .category-pill');
+  const sortSelect = document.getElementById('sort-dropdown') || document.getElementById('sort-select');
+  const resultsCountEl = document.getElementById('results-count-display') || document.getElementById('results-count');
+  const categorySelect = document.getElementById('header-category-select');
+  const omniSearchBtn = document.getElementById('omni-search-btn');
 
   // Delivery Location DOM
   const locationTriggerBtn = document.getElementById('location-trigger-btn');
@@ -51,15 +53,15 @@
   const ordersTriggerBtn = document.getElementById('orders-trigger-btn');
 
   // Cart DOM
-  const cartTriggerBtn = document.getElementById('cart-trigger-btn');
-  const cartDrawer = document.getElementById('cart-drawer');
-  const cartOverlay = document.getElementById('cart-overlay');
-  const cartCloseBtn = document.getElementById('cart-close-btn');
+  const cartTriggerBtn = document.getElementById('header-cart-trigger') || document.getElementById('cart-trigger-btn');
+  const cartDrawer = document.getElementById('cart-drawer-panel') || document.getElementById('cart-drawer');
+  const cartOverlay = document.getElementById('cart-drawer-backdrop') || document.getElementById('cart-overlay');
+  const cartCloseBtn = document.getElementById('cart-drawer-close-btn') || document.getElementById('cart-close-btn');
   const cartItemsList = document.getElementById('cart-items-list');
-  const cartCountBadges = document.querySelectorAll('.cart-count-badge');
-  const cartSubtotalEl = document.getElementById('cart-subtotal');
-  const cartTotalEl = document.getElementById('cart-total');
-  const checkoutBtn = document.getElementById('checkout-btn');
+  const cartCountBadges = document.querySelectorAll('.cart-count-badge, #header-cart-count, #cart-items-qty');
+  const cartSubtotalEl = document.getElementById('cart-subtotal-val') || document.getElementById('cart-subtotal');
+  const cartTotalEl = document.getElementById('cart-total') || document.getElementById('cart-subtotal-val');
+  const checkoutBtn = document.getElementById('cart-checkout-btn') || document.getElementById('checkout-btn');
   const freeShippingBar = document.getElementById('shipping-progress-bar');
   const freeShippingNotice = document.getElementById('shipping-notice');
 
@@ -115,40 +117,48 @@
       card.className = 'product-card';
       card.dataset.productId = product.id;
 
+      const stars = '★'.repeat(Math.round(product.rating)) + '☆'.repeat(5 - Math.round(product.rating));
+      const originalPrice = Math.round(product.price * 1.2);
+
       card.innerHTML = `
-        <div class="card-image-box">
-          <img src="${product.image}" alt="${product.name}" loading="lazy">
-          <span class="card-brand-tag font-mono">${product.brand}</span>
-          <button type="button" class="quick-view-btn font-mono" data-id="${product.id}" title="Inspect Technical Specifications">
-            SPECS & DETAILS
-          </button>
+        <div class="card-badge-top">
+          ${product.featured ? '<span class="badge-amzn-choice font-mono">Amazon\'s <span>Choice</span></span>' : ''}
+          ${product.rating >= 4.9 ? '<span class="badge-best-seller font-mono">#1 Best Seller</span>' : ''}
         </div>
 
-        <div class="card-info">
-          <div class="card-meta-top">
-            <span class="card-category font-mono">${product.category}</span>
-            <div class="card-rating font-mono">
-              <span class="rating-val">${product.rating.toFixed(1)}</span>
-              <span class="rating-reviews">(${product.reviewsCount})</span>
-            </div>
-          </div>
+        <div class="card-image-wrap">
+          <img src="${product.image}" alt="${product.name}" loading="lazy">
+        </div>
 
-          <h3 class="card-title">${product.name}</h3>
+        <div class="card-brand-kicker font-mono">${product.brand} &bull; ${product.category}</div>
+        <h3 class="card-title font-display">${product.name}</h3>
 
-          <div class="card-footer">
-            <div class="card-price-block">
-              <span class="card-price font-display">${getFormattedPrice(product.price)}</span>
-              ${product.primeExpress ? '<span class="prime-pill font-mono">PRIME 24H</span>' : ''}
-            </div>
+        <div class="card-rating-row">
+          <span class="stars-graphic">${stars}</span>
+          <span class="review-count-num font-mono">${product.rating.toFixed(1)} (${product.reviewsCount})</span>
+        </div>
 
-            <button type="button" class="add-to-bag-btn font-mono" data-id="${product.id}" title="Add to Bag">
-              <span>ADD</span>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-              </svg>
-            </button>
-          </div>
+        <div class="card-price-row">
+          <span class="price-currency-symbol">$</span>
+          <span class="price-main-val font-display">${getFormattedPrice(product.price)}</span>
+          <span class="price-original-val font-mono">${getFormattedPrice(originalPrice)}</span>
+        </div>
+
+        <div class="card-prime-delivery font-mono">
+          <svg class="prime-logo-svg" viewBox="0 0 100 28" fill="currentColor">
+            <path fill="#007185" d="M14.5 4.5h6.2c4.1 0 6.6 2.3 6.6 5.8 0 3.7-2.6 6-6.8 6h-3.4v7.2h-2.6V4.5zm2.6 9.4h3.3c2.7 0 4.1-1.3 4.1-3.6 0-2.2-1.4-3.5-4.1-3.5h-3.3v7.1zM31 10.4h2.5v2.8h.1c.8-1.9 2.5-3.1 4.5-3.1.6 0 1.1.1 1.6.3v2.7c-.6-.2-1.2-.3-1.9-.3-2.1 0-3.8 1.6-4.2 3.8v7h-2.6V10.4zm11 0h2.6v13.1H42V10.4zm1.3-6.5c.9 0 1.6.7 1.6 1.6 0 .9-.7 1.6-1.6 1.6-.9 0-1.6-.7-1.6-1.6 0-.9.7-1.6 1.6-1.6zM48 10.4h2.5v2.3h.1c1-1.6 2.8-2.6 4.7-2.6 2.1 0 3.8 1 4.5 2.8h.1c1-1.8 3-2.8 5-2.8 3.1 0 5.3 2.1 5.3 5.7v7.7h-2.6v-7.3c0-2.3-1.2-3.6-3.1-3.6-1.8 0-3.3 1.5-3.3 3.8v7.1h-2.6v-7.3c0-2.3-1.2-3.6-3.1-3.6-1.8 0-3.4 1.5-3.4 3.8v7.1H48V10.4zm29.8 6.9c0-3.8 2.8-7.1 6.8-7.1 4.1 0 6.6 3.1 6.6 7.1 0 .4 0 .9-.1 1.2H79.6c.4 2.4 2.2 4.1 4.8 4.1 1.8 0 3.2-.8 3.9-2.1l2.2 1.1c-1.2 2.2-3.5 3.5-6.2 3.5-4.3 0-7.3-3.1-7.3-7.2zm10.7-1.2c-.2-2.1-1.7-3.7-4-3.7-2.2 0-3.8 1.6-4.1 3.7h8.1z"/>
+            <path fill="#FF9900" d="M12.5 23.5c7.8 3.2 17.5 4.5 27.2 2.8 1-.2 2.1-.5 3.1-.8l-.8-1.8c-.9.3-1.8.5-2.7.7-9 1.6-18 .4-25.2-2.5l-1.6 1.6z"/>
+          </svg>
+          <span>FREE One-Day Delivery</span>
+        </div>
+
+        <div class="card-actions-stack font-mono">
+          <button type="button" class="btn-amzn-yellow add-to-bag-btn" data-id="${product.id}" title="Add to Cart">
+            <span>Add to Cart</span>
+          </button>
+          <button type="button" class="btn-amzn-quickview quick-view-btn" data-id="${product.id}" title="Quick View Specs">
+            <span>Quick View</span>
+          </button>
         </div>
       `;
 
@@ -309,15 +319,15 @@
 
   function openCart() {
     state.isCartOpen = true;
-    if (cartDrawer) cartDrawer.classList.add('open');
-    if (cartOverlay) cartOverlay.classList.add('open');
+    if (cartDrawer) cartDrawer.classList.add('open', 'active');
+    if (cartOverlay) cartOverlay.classList.add('open', 'active');
     document.body.style.overflow = 'hidden';
   }
 
   function closeCart() {
     state.isCartOpen = false;
-    if (cartDrawer) cartDrawer.classList.remove('open');
-    if (cartOverlay) cartOverlay.classList.remove('open');
+    if (cartDrawer) cartDrawer.classList.remove('open', 'active');
+    if (cartOverlay) cartOverlay.classList.remove('open', 'active');
     document.body.style.overflow = '';
   }
 
@@ -473,10 +483,42 @@
       });
     }
 
-    // Category pills
+    if (omniSearchBtn) {
+      omniSearchBtn.addEventListener('click', () => {
+        if (searchInput) {
+          state.searchQuery = searchInput.value;
+          filterAndRender();
+          const catSection = document.getElementById('catalog');
+          if (catSection) catSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+
+    if (categorySelect) {
+      categorySelect.addEventListener('change', (e) => {
+        state.activeCategory = e.target.value;
+        updateActivePill();
+        filterAndRender();
+      });
+    }
+
+    // Category pills & links with data-cat / data-category
+    document.querySelectorAll('[data-cat]').forEach(el => {
+      el.addEventListener('click', (e) => {
+        const cat = el.dataset.cat;
+        if (cat) {
+          state.activeCategory = cat;
+          if (categorySelect) categorySelect.value = cat;
+          updateActivePill();
+          filterAndRender();
+        }
+      });
+    });
+
     categoryPills.forEach(pill => {
       pill.addEventListener('click', () => {
-        state.activeCategory = pill.dataset.category;
+        state.activeCategory = pill.dataset.category || 'All';
+        if (categorySelect) categorySelect.value = state.activeCategory;
         updateActivePill();
         filterAndRender();
       });
@@ -624,26 +666,85 @@
       ordersTriggerBtn.onclick = () => window.AtelierAccount.openModal('orders');
     }
 
+    const footerAccountLink = document.getElementById('footer-account-link');
+    if (footerAccountLink && window.AtelierAccount) {
+      footerAccountLink.onclick = (e) => {
+        e.preventDefault();
+        window.AtelierAccount.openModal('orders');
+      };
+    }
+
+    // Departments Menu & Flyout Drawer
+    const deptMenuBtn = document.getElementById('departments-menu-btn');
+    const deptDrawer = document.getElementById('departments-drawer');
+    const deptOverlay = document.getElementById('departments-drawer-overlay');
+    const deptClose = document.getElementById('departments-drawer-close');
+
+    const openDeptDrawer = () => {
+      if (deptDrawer) deptDrawer.classList.add('open');
+      if (deptOverlay) deptOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeDeptDrawer = () => {
+      if (deptDrawer) deptDrawer.classList.remove('open');
+      if (deptOverlay) deptOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    };
+
+    if (deptMenuBtn) deptMenuBtn.onclick = openDeptDrawer;
+    if (deptClose) deptClose.onclick = closeDeptDrawer;
+    if (deptOverlay) deptOverlay.onclick = closeDeptDrawer;
+
     // Department drawer category clicks
     document.querySelectorAll('.dept-nav-link').forEach(link => {
       link.onclick = (e) => {
-        e.preventDefault();
         const cat = link.dataset.category;
-        state.activeCategory = cat;
-        updateActivePill();
-        filterAndRender();
-
-        const deptDrawer = document.getElementById('departments-drawer');
-        const deptOverlay = document.getElementById('departments-drawer-overlay');
-        if (deptDrawer) deptDrawer.classList.remove('open');
-        if (deptOverlay) deptOverlay.classList.remove('open');
-        document.body.style.overflow = '';
+        if (cat) {
+          e.preventDefault();
+          state.activeCategory = cat;
+          if (categorySelect) categorySelect.value = cat;
+          updateActivePill();
+          filterAndRender();
+          closeDeptDrawer();
+        }
       };
     });
+
+    const drawerAccLink = document.getElementById('drawer-account-link');
+    if (drawerAccLink && window.AtelierAccount) {
+      drawerAccLink.onclick = (e) => {
+        e.preventDefault();
+        closeDeptDrawer();
+        window.AtelierAccount.openModal('profile');
+      };
+    }
+
+    const drawerOrdLink = document.getElementById('drawer-orders-link');
+    if (drawerOrdLink && window.AtelierAccount) {
+      drawerOrdLink.onclick = (e) => {
+        e.preventDefault();
+        closeDeptDrawer();
+        window.AtelierAccount.openModal('orders');
+      };
+    }
 
     // Hero Add Button
     if (heroAddBtn) {
       heroAddBtn.onclick = () => addToCart(PRODUCTS_DATA[0].id, 1);
+    }
+
+    // Showcase Disclaimer Button Trigger
+    const navDisclaimerBtn = document.getElementById('nav-disclaimer-btn');
+    if (navDisclaimerBtn) {
+      navDisclaimerBtn.onclick = (e) => {
+        e.preventDefault();
+        const overlay = document.getElementById('demo-disclaimer-overlay');
+        if (overlay) {
+          overlay.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        }
+      };
     }
 
     // Demo Disclaimer Logic

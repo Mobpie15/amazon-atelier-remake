@@ -181,13 +181,20 @@
       });
     }
 
-    // 3. Price Preset Buttons
+    // 3. Price Preset Buttons & Radios
     const priceBtns = document.querySelectorAll('.price-preset-btn');
     priceBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         priceBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         filterState.priceRange = btn.dataset.preset;
+        notifyFilterChange();
+      });
+    });
+
+    document.querySelectorAll('input[name="price-filter"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        filterState.priceRange = e.target.value;
         notifyFilterChange();
       });
     });
@@ -210,13 +217,20 @@
       });
     }
 
-    // 6. Rating Buttons
+    // 6. Rating Buttons & Radios
     const ratingBtns = document.querySelectorAll('.rating-filter-btn');
     ratingBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         ratingBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         filterState.minRating = parseFloat(btn.dataset.rating || 0);
+        notifyFilterChange();
+      });
+    });
+
+    document.querySelectorAll('input[name="rating-filter"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        filterState.minRating = parseFloat(e.target.value || 0);
         notifyFilterChange();
       });
     });
