@@ -219,6 +219,30 @@
     });
   }
 
+  // Toast notification engine
+  function showToast(msg) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast-msg font-mono';
+    toast.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      <span>${msg}</span>
+    `;
+    container.appendChild(toast);
+    setTimeout(() => {
+      if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 3000);
+  }
+
+  function triggerBadgeBounce() {
+    cartCountBadges.forEach(b => {
+      b.classList.remove('bounce');
+      void b.offsetWidth;
+      b.classList.add('bounce');
+    });
+  }
+
   // 3. Cart & 1-Tap Checkout
   function addToCart(productId, qty = 1) {
     const product = state.products.find(p => p.id === productId);
@@ -232,6 +256,8 @@
     }
 
     updateCartUI();
+    triggerBadgeBounce();
+    showToast(`Added "${product.name}" to Atelier Cart`);
     openCart();
   }
 
@@ -244,11 +270,14 @@
       state.cart.splice(itemIndex, 1);
     }
     updateCartUI();
+    triggerBadgeBounce();
   }
 
   function removeFromCart(productId) {
     state.cart = state.cart.filter(i => i.product.id !== productId);
     updateCartUI();
+    triggerBadgeBounce();
+    showToast('Removed item from Atelier Cart');
   }
 
   function updateCartUI() {
@@ -279,9 +308,9 @@
 
     if (state.cart.length === 0) {
       cartItemsList.innerHTML = `
-        <div class="cart-empty-state font-mono">
-          <span>YOUR ATELIER BAG IS EMPTY</span>
-          <p>Explore the architectural catalog to commission an object.</p>
+        <div class="cart-empty-state font-mono" style="padding: 2rem 1rem; text-align: center; color: var(--text-muted);">
+          <span style="font-weight: 800; font-size: 0.9rem; color: var(--text-dark); display: block; margin-bottom: 0.5rem;">YOUR ATELIER BAG IS EMPTY</span>
+          <p style="font-size: 0.8rem;">Explore the architectural catalog to commission an object.</p>
         </div>
       `;
       if (checkoutBtn) checkoutBtn.disabled = true;
@@ -295,7 +324,7 @@
       return `
         <div class="cart-item-row">
           <div class="cart-item-thumb">
-            <img src="${p.image}" alt="${p.name}">
+            <img src="${p.image}" alt="${p.name}" class="cart-item-img">
           </div>
           <div class="cart-item-details">
             <div class="cart-item-header">
@@ -344,19 +373,25 @@
       if (cartItemsList) {
         cartItemsList.innerHTML = `
           <div class="checkout-success-box">
-            <div class="success-mark font-mono">[ ORDER CONFIRMED ]</div>
+            <div class="success-mark font-mono">[ 256-BIT TOKEN VERIFIED &bull; ORDER CONFIRMED ]</div>
             <h3>Dispatch Ref: ${orderId}</h3>
             <p>Target delivery to <strong>${state.deliveryLocation.recipient} (${state.deliveryLocation.city} ${state.deliveryLocation.pin})</strong> within 24 hours.</p>
             <div class="success-meta font-mono">
               <span>TRACKING ID: 1Z-999-ATELIER-${orderId.split('-')[1]}</span>
-              <span>CARRIER: AMAZON AIR LOGISTICS</span>
+              <span>CARRIER: AMAZON AIR LOGISTICS FLIGHT 782</span>
               <span>STATUS: AUTOMATED ROBOTIC PICKING ACTIVE</span>
+              <span>ESTIMATED DELIVERY: TOMORROW BY 14:00 EXPRESS</span>
             </div>
+            <button type="button" class="btn-amzn-yellow font-mono" style="margin-top: 1rem; width: 100%;" onclick="alert('Order dispatch ref ' + '${orderId}' + ' logged to Prime Telemetry Network.');">
+              VIEW LIVE AIRFREIGHT TELEMETRY
+            </button>
           </div>
         `;
       }
       state.cart = [];
       updateCartUI();
+      triggerBadgeBounce();
+      showToast(`Order Confirmed &bull; Ref ${orderId}`);
 
       if (checkoutBtn) {
         checkoutBtn.innerHTML = `<span>ORDER DISPATCHED</span>`;
@@ -734,6 +769,100 @@
       heroAddBtn.onclick = () => addToCart(PRODUCTS_DATA[0].id, 1);
     }
 
+    // Curated Add-ons Click Handlers
+    document.querySelectorAll('.btn-addon-add').forEach(btn => {
+      btn.onclick = () => {
+        const name = btn.dataset.addonName;
+        const price = parseInt(btn.dataset.addonPrice, 10);
+        const addonItem = {
+          id: `addon-${Date.now()}`,
+          name: name,
+          brand: 'AMAZON ATELIER ACCESSORIES',
+          category: 'Accessories',
+          price: price,
+          image: 'assets/images/prod-headphones.jpg',
+          rating: 5.0,
+          reviewsCount: 180,
+          specs: { Compatibility: 'Universal Atelier Standard', Material: 'Aerospace Grade' }
+        };
+        state.cart.push({ product: addonItem, quantity: 1 });
+        updateCartUI();
+        triggerBadgeBounce();
+        showToast(`Added Add-on: ${name}`);
+      };
+    });
+
+    // Airfreight Countdown Ticker
+    function initAirfreightTimer() {
+      const timerEl = document.getElementById('airfreight-timer');
+      if (!timerEl) return;
+      let secondsLeft = 3 * 3600 + 42 * 60 + 15;
+      setInterval(() => {
+        secondsLeft = secondsLeft > 0 ? secondsLeft - 1 : 4 * 3600;
+        const h = String(Math.floor(secondsLeft / 3600)).padStart(2, '0');
+        const m = String(Math.floor((secondsLeft % 3600) / 60)).padStart(2, '0');
+        const s = String(secondsLeft % 60).padStart(2, '0');
+        timerEl.textContent = `${h}:${m}:${s}`;
+      }, 1000);
+    }
+
+    // Smart Omnibox Autocomplete Engine
+    function initAutocomplete() {
+      const dropdown = document.getElementById('search-autocomplete-dropdown');
+      if (!searchInput || !dropdown) return;
+
+      searchInput.addEventListener('input', (e) => {
+        const q = e.target.value.trim().toLowerCase();
+        if (!q) {
+          dropdown.classList.remove('active');
+          dropdown.innerHTML = '';
+          return;
+        }
+
+        const matches = state.products.filter(p =>
+          p.name.toLowerCase().includes(q) ||
+          p.brand.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q)
+        ).slice(0, 5);
+
+        if (matches.length === 0) {
+          dropdown.classList.remove('active');
+          dropdown.innerHTML = '';
+          return;
+        }
+
+        dropdown.innerHTML = matches.map(p => `
+          <div class="autocomplete-item" data-id="${p.id}">
+            <div class="autocomplete-item-left">
+              <img src="${p.image}" alt="${p.name}" class="autocomplete-thumb">
+              <div>
+                <div class="autocomplete-name">${p.name}</div>
+                <div class="autocomplete-cat">${p.brand} &bull; ${p.category}</div>
+              </div>
+            </div>
+            <div class="autocomplete-price font-display">${getFormattedPrice(p.price)}</div>
+          </div>
+        `).join('');
+
+        dropdown.classList.add('active');
+      });
+
+      dropdown.addEventListener('click', (e) => {
+        const item = e.target.closest('.autocomplete-item');
+        if (item) {
+          const id = item.dataset.id;
+          dropdown.classList.remove('active');
+          openQuickView(id);
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.header-search-wrap')) {
+          dropdown.classList.remove('active');
+        }
+      });
+    }
+
     // Showcase Disclaimer Button Trigger
     const navDisclaimerBtn = document.getElementById('nav-disclaimer-btn');
     if (navDisclaimerBtn) {
@@ -814,6 +943,8 @@
     updateCartUI();
     updateDeliveryLocation('New Delhi', '110001');
     initDemoDisclaimer();
+    initAirfreightTimer();
+    initAutocomplete();
   }
 
   if (document.readyState === 'loading') {

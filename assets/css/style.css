@@ -150,6 +150,55 @@ img {
 .font-mono { font-family: var(--font-mono); }
 .font-body { font-family: var(--font-body); }
 
+/* Top Telemetry Announcement Strip */
+.top-announcement-strip {
+  background: #0d1117;
+  color: #b1b5b9;
+  font-size: 0.72rem;
+  padding: 0.35rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.top-announcement-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.telemetry-live-dot {
+  width: 6px;
+  height: 6px;
+  background: #00e676;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #00e676;
+  animation: pulseLive 2s infinite;
+}
+
+@keyframes pulseLive {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.7; }
+}
+
+.top-announcement-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.7rem;
+}
+
+.top-announcement-right a {
+  color: #93c5fd;
+  text-decoration: none;
+}
+
+.top-announcement-right a:hover {
+  text-decoration: underline;
+}
+
 /* --------------------------------------------------------------------------
    03. TOP AMAZON COMMAND HEADER BAR (#131921)
    -------------------------------------------------------------------------- */
@@ -174,11 +223,12 @@ img {
 .brand-anchor {
   display: flex;
   align-items: center;
-  gap: 0.2rem;
+  gap: 0.35rem;
   padding: 0.35rem 0.5rem;
   border: 1px solid transparent;
   border-radius: var(--radius-xs);
   flex-shrink: 0;
+  transition: border-color 0.15s ease;
 }
 
 .brand-anchor:hover {
@@ -186,16 +236,18 @@ img {
   text-decoration: none;
 }
 
-.amzn-logo-svg {
-  height: 32px;
+.amzn-logo-img {
+  height: 28px;
   width: auto;
+  display: block;
 }
 
 .brand-sub-badge {
   font-size: 0.65rem;
   font-weight: 800;
   color: var(--amzn-amber);
-  margin-top: 4px;
+  margin-top: 5px;
+  letter-spacing: 0.08em;
 }
 
 /* Delivery Location Button */
@@ -239,12 +291,81 @@ img {
   border-radius: 6px;
   background: #ffffff;
   border: 2px solid transparent;
+  position: relative;
   transition: border-color var(--ease-fast), box-shadow var(--ease-fast);
 }
 
 .header-search-wrap:focus-within {
   border-color: var(--amzn-amber);
   box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.4);
+}
+
+/* Omnibox Autocomplete Dropdown */
+.search-autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  border: 1px solid #d5d9d9;
+  z-index: 1100;
+  display: none;
+  overflow: hidden;
+}
+
+.search-autocomplete-dropdown.active {
+  display: block;
+}
+
+.autocomplete-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.15s ease;
+}
+
+.autocomplete-item:last-child {
+  border-bottom: none;
+}
+
+.autocomplete-item:hover {
+  background: #f7fafa;
+}
+
+.autocomplete-item-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.autocomplete-thumb {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.autocomplete-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #0f1111;
+}
+
+.autocomplete-cat {
+  font-size: 0.72rem;
+  color: #565959;
+}
+
+.autocomplete-price {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #b12704;
 }
 
 .search-category-select {
@@ -1111,11 +1232,118 @@ img {
   gap: 0.3rem;
   font-size: 0.72rem;
   color: #565959;
+/* Cart Curated Add-ons Section */
+.cart-addons-section {
+  padding: 1rem 1.25rem;
+  background: #f7fafa;
+  border-top: 1px solid #e5e7eb;
+}
+
+.cart-addons-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #565959;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.65rem;
+}
+
+.cart-addons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cart-addon-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.65rem;
   background: #ffffff;
-  padding: 0.75rem;
+  border: 1px solid #d5d9d9;
+  border-radius: 4px;
+}
+
+.cart-addon-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-addon-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #0f1111;
+}
+
+.cart-addon-price {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #b12704;
+}
+
+.btn-addon-add {
+  padding: 0.25rem 0.65rem;
+  background: #ffd814;
+  border: 1px solid #fcd200;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #0f1111;
+  transition: background 0.15s ease;
+}
+
+.btn-addon-add:hover {
+  background: #f7ca00;
+}
+
+/* Cart Badge Bounce Animation */
+@keyframes cartBounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.45) translateY(-2px); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+.cart-count-badge.bounce {
+  animation: cartBounce 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Global Floating Toast Notifications */
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.toast-msg {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1.25rem;
+  background: #131921;
+  color: #ffffff;
   border-radius: 6px;
-  border: 1px solid #e0e0e0;
-  text-align: left;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-left: 4px solid #ff9900;
+  pointer-events: auto;
+  animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1), toastFadeOut 0.3s 2.7s forwards;
+}
+
+@keyframes toastSlideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes toastFadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(10px); }
 }
 
 /* --------------------------------------------------------------------------
