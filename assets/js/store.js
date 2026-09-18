@@ -885,7 +885,7 @@
       };
     }
 
-    // Demo Disclaimer Logic
+    // Demo Disclaimer Logic (Manual trigger only, never auto-lock screen)
     function initDemoDisclaimer() {
       const overlay = document.getElementById('demo-disclaimer-overlay');
       const closeBtn = document.getElementById('demo-disclaimer-close');
@@ -896,9 +896,6 @@
       function dismiss() {
         overlay.classList.remove('open');
         document.body.style.overflow = '';
-        try {
-          sessionStorage.setItem('amazon_atelier_disclaimer_dismissed', '1');
-        } catch (e) {}
       }
 
       if (closeBtn) closeBtn.addEventListener('click', dismiss);
@@ -906,18 +903,6 @@
       overlay.addEventListener('click', (e) => {
         if (e.target === overlay) dismiss();
       });
-
-      let isDismissed = false;
-      try {
-        isDismissed = sessionStorage.getItem('amazon_atelier_disclaimer_dismissed') === '1';
-      } catch (e) {}
-
-      if (!isDismissed) {
-        setTimeout(() => {
-          overlay.classList.add('open');
-          document.body.style.overflow = 'hidden';
-        }, 400);
-      }
     }
 
     // Global keyboard shortcuts

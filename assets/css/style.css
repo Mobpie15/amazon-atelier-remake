@@ -1119,12 +1119,14 @@ img {
   backdrop-filter: blur(4px);
   z-index: 2000;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity var(--ease-smooth);
+  transition: opacity var(--ease-smooth), visibility var(--ease-smooth);
 }
 
 .cart-drawer-backdrop.active {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
 }
 
@@ -1482,8 +1484,9 @@ img {
   backdrop-filter: blur(4px);
   z-index: 3000;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1492,6 +1495,7 @@ img {
 
 .modal-overlay.open {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
 }
 
