@@ -80,10 +80,57 @@
     return `$${usd.toLocaleString()}`;
   }
 
+  function getWishlist() {
+    try {
+      return JSON.parse(localStorage.getItem('amazon_atelier_wishlist') || '[]');
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function toggleWishlist(productId) {
+    let list = getWishlist();
+    const product = state.products.find(p => p.id === productId);
+    const name = product ? product.name : 'Object';
+
+    if (list.includes(productId)) {
+      list = list.filter(id => id !== productId);
+      showToast(`Removed "${name}" from Wishlist`);
+    } else {
+      list.push(productId);
+      showToast(`Added "${name}" to Wishlist`);
+    }
+
+    try {
+      localStorage.setItem('amazon_atelier_wishlist', JSON.stringify(list));
+    } catch (e) {}
+
+    document.querySelectorAll(`.card-wishlist-btn[data-wishlist-id="${productId}"]`).forEach(btn => {
+      const isSaved = list.includes(productId);
+      btn.classList.toggle('active', isSaved);
+      const svg = btn.querySelector('svg');
+      if (svg) svg.setAttribute('fill', isSaved ? '#e11d48' : 'none');
+    });
+
+    const badgeEl = document.getElementById('account-wishlist-count');
+    if (badgeEl) badgeEl.textContent = list.length;
+
+    window.dispatchEvent(new CustomEvent('atelier-wishlist-updated'));
+  }
+
+  function getPrimeDeliveryDateStr() {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    const options = { weekday: 'short', month: 'short', day: 'numeric' };
+    return `Tomorrow, ${d.toLocaleDateString('en-US', options)}`;
+  }
+
   // 1. Render Catalog Grid
   function renderCatalog() {
     if (!gridEl) return;
     gridEl.innerHTML = '';
+
+    const wishlist = getWishlist();
 
     if (state.filteredProducts.length === 0) {
       gridEl.innerHTML = `
@@ -112,15 +159,24 @@
       resultsCountEl.textContent = `${state.filteredProducts.length} OBJECTS`;
     }
 
+    const primeDateStr = getPrimeDeliveryDateStr();
+
     state.filteredProducts.forEach((product, idx) => {
       const card = document.createElement('article');
       card.className = 'product-card';
       card.dataset.productId = product.id;
 
+      const isWishlisted = wishlist.includes(product.id);
       const stars = '★'.repeat(Math.round(product.rating)) + '☆'.repeat(5 - Math.round(product.rating));
       const originalPrice = Math.round(product.price * 1.2);
 
       card.innerHTML = `
+        <button type="button" class="card-wishlist-btn ${isWishlisted ? 'active' : ''}" data-wishlist-id="${product.id}" title="${isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}" aria-label="Save to Wishlist">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="${isWishlisted ? '#e11d48' : 'none'}" stroke="currentColor" stroke-width="2.2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </button>
+
         <div class="card-badge-top">
           ${product.featured ? '<span class="badge-amzn-choice font-mono">Amazon\'s <span>Choice</span></span>' : ''}
           ${product.rating >= 4.9 ? '<span class="badge-best-seller font-mono">#1 Best Seller</span>' : ''}
@@ -149,7 +205,7 @@
             <path fill="#007185" d="M14.5 4.5h6.2c4.1 0 6.6 2.3 6.6 5.8 0 3.7-2.6 6-6.8 6h-3.4v7.2h-2.6V4.5zm2.6 9.4h3.3c2.7 0 4.1-1.3 4.1-3.6 0-2.2-1.4-3.5-4.1-3.5h-3.3v7.1zM31 10.4h2.5v2.8h.1c.8-1.9 2.5-3.1 4.5-3.1.6 0 1.1.1 1.6.3v2.7c-.6-.2-1.2-.3-1.9-.3-2.1 0-3.8 1.6-4.2 3.8v7h-2.6V10.4zm11 0h2.6v13.1H42V10.4zm1.3-6.5c.9 0 1.6.7 1.6 1.6 0 .9-.7 1.6-1.6 1.6-.9 0-1.6-.7-1.6-1.6 0-.9.7-1.6 1.6-1.6zM48 10.4h2.5v2.3h.1c1-1.6 2.8-2.6 4.7-2.6 2.1 0 3.8 1 4.5 2.8h.1c1-1.8 3-2.8 5-2.8 3.1 0 5.3 2.1 5.3 5.7v7.7h-2.6v-7.3c0-2.3-1.2-3.6-3.1-3.6-1.8 0-3.3 1.5-3.3 3.8v7.1h-2.6v-7.3c0-2.3-1.2-3.6-3.1-3.6-1.8 0-3.4 1.5-3.4 3.8v7.1H48V10.4zm29.8 6.9c0-3.8 2.8-7.1 6.8-7.1 4.1 0 6.6 3.1 6.6 7.1 0 .4 0 .9-.1 1.2H79.6c.4 2.4 2.2 4.1 4.8 4.1 1.8 0 3.2-.8 3.9-2.1l2.2 1.1c-1.2 2.2-3.5 3.5-6.2 3.5-4.3 0-7.3-3.1-7.3-7.2zm10.7-1.2c-.2-2.1-1.7-3.7-4-3.7-2.2 0-3.8 1.6-4.1 3.7h8.1z"/>
             <path fill="#FF9900" d="M12.5 23.5c7.8 3.2 17.5 4.5 27.2 2.8 1-.2 2.1-.5 3.1-.8l-.8-1.8c-.9.3-1.8.5-2.7.7-9 1.6-18 .4-25.2-2.5l-1.6 1.6z"/>
           </svg>
-          <span>FREE One-Day Delivery</span>
+          <span>FREE Delivery <strong>${primeDateStr}</strong></span>
         </div>
 
         <div class="card-actions-stack font-mono">
@@ -243,7 +299,9 @@
     });
   }
 
-  // 3. Cart & 1-Tap Checkout
+  // 3. Cart, Promo Voucher & 1-Click Checkout
+  state.appliedPromo = null;
+
   function addToCart(productId, qty = 1) {
     const product = state.products.find(p => p.id === productId);
     if (!product) return;
@@ -289,15 +347,44 @@
     });
 
     const subtotalUSD = state.cart.reduce((sum, i) => sum + (i.product.price * i.quantity), 0);
-    if (cartSubtotalEl) cartSubtotalEl.textContent = getFormattedPrice(subtotalUSD);
-    if (cartTotalEl) cartTotalEl.textContent = getFormattedPrice(subtotalUSD);
+    const discountRate = state.appliedPromo ? state.appliedPromo.discountRate : 0;
+    const discountUSD = subtotalUSD * discountRate;
+    const taxableUSD = subtotalUSD - discountUSD;
+    const taxUSD = taxableUSD > 0 ? taxableUSD * 0.08 : 0;
+    const grandTotalUSD = taxableUSD + taxUSD;
+
+    const summaryBreakdown = document.getElementById('cart-summary-breakdown');
+    const summarySubtotal = document.getElementById('summary-subtotal-val');
+    const summaryDiscountRow = document.getElementById('summary-discount-row');
+    const summaryDiscountLabel = document.getElementById('summary-discount-label');
+    const summaryDiscountVal = document.getElementById('summary-discount-val');
+    const summaryTaxVal = document.getElementById('summary-tax-val');
+
+    if (summaryBreakdown) {
+      summaryBreakdown.style.display = totalCount > 0 ? 'flex' : 'none';
+    }
+    if (summarySubtotal) summarySubtotal.textContent = getFormattedPrice(subtotalUSD);
+    if (summaryTaxVal) summaryTaxVal.textContent = getFormattedPrice(taxUSD);
+
+    if (summaryDiscountRow) {
+      if (discountUSD > 0 && state.appliedPromo) {
+        summaryDiscountRow.style.display = 'flex';
+        if (summaryDiscountLabel) summaryDiscountLabel.textContent = `Voucher (${state.appliedPromo.code}):`;
+        if (summaryDiscountVal) summaryDiscountVal.textContent = `-${getFormattedPrice(discountUSD)}`;
+      } else {
+        summaryDiscountRow.style.display = 'none';
+      }
+    }
+
+    if (cartSubtotalEl) cartSubtotalEl.textContent = getFormattedPrice(grandTotalUSD);
+    if (cartTotalEl) cartTotalEl.textContent = getFormattedPrice(grandTotalUSD);
 
     const thresholdUSD = 150;
     const progress = Math.min(100, (subtotalUSD / thresholdUSD) * 100);
     if (freeShippingBar) freeShippingBar.style.width = `${progress}%`;
     if (freeShippingNotice) {
       if (subtotalUSD >= thresholdUSD) {
-        freeShippingNotice.innerHTML = `<strong>PRIME EXPRESS UNLOCKED</strong> &bull; Free Next-Day Courier to ${state.deliveryLocation.city}`;
+        freeShippingNotice.innerHTML = `<strong>PRIME EXPRESS UNLOCKED</strong> &bull; Free Next-Day Airfreight to ${state.deliveryLocation.city}`;
       } else {
         const rem = thresholdUSD - subtotalUSD;
         freeShippingNotice.innerHTML = `Add <strong>${getFormattedPrice(rem)}</strong> more for complimentary Prime Dispatch`;
@@ -308,9 +395,9 @@
 
     if (state.cart.length === 0) {
       cartItemsList.innerHTML = `
-        <div class="cart-empty-state font-mono" style="padding: 2rem 1rem; text-align: center; color: var(--text-muted);">
-          <span style="font-weight: 800; font-size: 0.9rem; color: var(--text-dark); display: block; margin-bottom: 0.5rem;">YOUR ATELIER BAG IS EMPTY</span>
-          <p style="font-size: 0.8rem;">Explore the architectural catalog to commission an object.</p>
+        <div class="cart-empty-state font-mono" style="padding: 2.5rem 1rem; text-align: center; color: var(--text-muted);">
+          <span style="font-weight: 800; font-size: 0.95rem; color: var(--text-dark); display: block; margin-bottom: 0.5rem;">YOUR ATELIER BAG IS EMPTY</span>
+          <p style="font-size: 0.82rem;">Explore the curated catalog to commission architectural objects.</p>
         </div>
       `;
       if (checkoutBtn) checkoutBtn.disabled = true;
@@ -331,12 +418,12 @@
               <span class="cart-item-brand font-mono">${p.brand}</span>
               <button type="button" class="cart-item-remove" data-remove="${p.id}" title="Remove Item">&times;</button>
             </div>
-            <h4 class="cart-item-name">${p.name}</h4>
+            <h4 class="cart-item-name font-display">${p.name}</h4>
             <div class="cart-item-bottom">
-              <span class="cart-item-price font-mono">${getFormattedPrice(p.price * item.quantity)}</span>
-              <div class="cart-stepper">
+              <span class="cart-item-price font-display">${getFormattedPrice(p.price * item.quantity)}</span>
+              <div class="cart-stepper font-mono">
                 <button type="button" class="step-btn" data-step="-1" data-id="${p.id}">&minus;</button>
-                <span class="step-val font-mono">${item.quantity}</span>
+                <span class="step-val">${item.quantity}</span>
                 <button type="button" class="step-btn" data-step="1" data-id="${p.id}">&plus;</button>
               </div>
             </div>
@@ -344,6 +431,42 @@
         </div>
       `;
     }).join('');
+  }
+
+  function applyPromoCode() {
+    const input = document.getElementById('cart-promo-input');
+    const feedback = document.getElementById('cart-promo-feedback');
+    if (!input || !feedback) return;
+
+    const code = input.value.trim().toUpperCase();
+    if (!code) {
+      feedback.className = 'promo-feedback error';
+      feedback.textContent = 'Please enter a voucher code.';
+      return;
+    }
+
+    if (code === 'ATELIER10' || code === 'PRIME10') {
+      state.appliedPromo = { code: code, discountRate: 0.10, label: '10% Atelier Patron' };
+      feedback.className = 'promo-feedback success';
+      feedback.textContent = '✓ 10% Atelier Patron Voucher applied!';
+      showToast('10% Voucher Discount Applied');
+    } else if (code === 'PRIME20' || code === 'MOBPIE20') {
+      state.appliedPromo = { code: code, discountRate: 0.20, label: '20% Executive Prime' };
+      feedback.className = 'promo-feedback success';
+      feedback.textContent = '✓ 20% Prime VIP Voucher applied!';
+      showToast('20% VIP Voucher Applied');
+    } else if (code === 'MOBPIE') {
+      state.appliedPromo = { code: code, discountRate: 0.15, label: '15% Mobpie Atelier' };
+      feedback.className = 'promo-feedback success';
+      feedback.textContent = '✓ 15% Masterpiece Voucher applied!';
+      showToast('15% Voucher Applied');
+    } else {
+      feedback.className = 'promo-feedback error';
+      feedback.textContent = 'Invalid code. Try ATELIER10 or PRIME20';
+      return;
+    }
+
+    updateCartUI();
   }
 
   function openCart() {
@@ -360,92 +483,256 @@
     document.body.style.overflow = '';
   }
 
-  function handleCheckout() {
-    if (state.cart.length === 0) return;
-
-    if (checkoutBtn) {
-      checkoutBtn.disabled = true;
-      checkoutBtn.innerHTML = `<span>ROUTING TO PRIME EXPRESS AIRFREIGHT...</span>`;
+  // 4. Complete 3-Step Checkout Flow
+  function openCheckoutModal() {
+    if (state.cart.length === 0) {
+      showToast('Your bag is empty. Add an item first.');
+      return;
     }
 
-    setTimeout(() => {
-      const orderId = `AMZN-${Math.floor(100000 + Math.random() * 900000)}`;
-      if (cartItemsList) {
-        cartItemsList.innerHTML = `
-          <div class="checkout-success-box">
-            <div class="success-mark font-mono">[ 256-BIT TOKEN VERIFIED &bull; ORDER CONFIRMED ]</div>
-            <h3>Dispatch Ref: ${orderId}</h3>
-            <p>Target delivery to <strong>${state.deliveryLocation.recipient} (${state.deliveryLocation.city} ${state.deliveryLocation.pin})</strong> within 24 hours.</p>
-            <div class="success-meta font-mono">
-              <span>TRACKING ID: 1Z-999-ATELIER-${orderId.split('-')[1]}</span>
-              <span>CARRIER: AMAZON AIR LOGISTICS FLIGHT 782</span>
-              <span>STATUS: AUTOMATED ROBOTIC PICKING ACTIVE</span>
-              <span>ESTIMATED DELIVERY: TOMORROW BY 14:00 EXPRESS</span>
-            </div>
-            <button type="button" class="btn-amzn-yellow font-mono" style="margin-top: 1rem; width: 100%;" onclick="alert('Order dispatch ref ' + '${orderId}' + ' logged to Prime Telemetry Network.');">
-              VIEW LIVE AIRFREIGHT TELEMETRY
-            </button>
-          </div>
-        `;
-      }
-      state.cart = [];
-      updateCartUI();
-      triggerBadgeBounce();
-      showToast(`Order Confirmed &bull; Ref ${orderId}`);
+    closeCart();
 
-      if (checkoutBtn) {
-        checkoutBtn.innerHTML = `<span>ORDER DISPATCHED</span>`;
+    const checkoutModal = document.getElementById('checkout-modal-overlay');
+    const activeScreen = document.getElementById('checkout-active-screen');
+    const successScreen = document.getElementById('checkout-success-screen');
+
+    if (!checkoutModal) return;
+
+    if (activeScreen) activeScreen.style.display = 'block';
+    if (successScreen) successScreen.style.display = 'none';
+
+    // Populate checkout preview
+    const previewContainer = document.getElementById('checkout-items-preview');
+    if (previewContainer) {
+      previewContainer.innerHTML = state.cart.map(i => `
+        <div class="checkout-item-mini">
+          <span>${i.product.name} &times; ${i.quantity}</span>
+          <span style="font-weight: 800; color: #0f1111;">${getFormattedPrice(i.product.price * i.quantity)}</span>
+        </div>
+      `).join('');
+    }
+
+    // Calculations
+    const subtotalUSD = state.cart.reduce((sum, i) => sum + (i.product.price * i.quantity), 0);
+    const discountRate = state.appliedPromo ? state.appliedPromo.discountRate : 0;
+    const discountUSD = subtotalUSD * discountRate;
+    const taxableUSD = subtotalUSD - discountUSD;
+    const taxUSD = taxableUSD * 0.08;
+    const totalUSD = taxableUSD + taxUSD;
+
+    const subtotalEl = document.getElementById('checkout-subtotal-val');
+    const discountRow = document.getElementById('checkout-discount-row');
+    const discountLabel = document.getElementById('checkout-discount-label');
+    const discountVal = document.getElementById('checkout-discount-val');
+    const taxEl = document.getElementById('checkout-tax-val');
+    const totalEl = document.getElementById('checkout-total-val');
+
+    if (subtotalEl) subtotalEl.textContent = getFormattedPrice(subtotalUSD);
+    if (taxEl) taxEl.textContent = getFormattedPrice(taxUSD);
+    if (totalEl) totalEl.textContent = getFormattedPrice(totalUSD);
+
+    if (discountRow) {
+      if (discountUSD > 0 && state.appliedPromo) {
+        discountRow.style.display = 'flex';
+        if (discountLabel) discountLabel.textContent = `Voucher (${state.appliedPromo.code}):`;
+        if (discountVal) discountVal.textContent = `-${getFormattedPrice(discountUSD)}`;
+      } else {
+        discountRow.style.display = 'none';
       }
-    }, 900);
+    }
+
+    // Radio card selection
+    document.querySelectorAll('.checkout-addr-card').forEach(card => {
+      card.onclick = () => {
+        document.querySelectorAll('.checkout-addr-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        const input = card.querySelector('input');
+        if (input) input.checked = true;
+      };
+    });
+
+    document.querySelectorAll('.checkout-pay-card').forEach(card => {
+      card.onclick = () => {
+        document.querySelectorAll('.checkout-pay-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        const input = card.querySelector('input');
+        if (input) input.checked = true;
+      };
+    });
+
+    checkoutModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
 
-  // 4. Quick View Specs Modal
+  function closeCheckoutModal() {
+    const checkoutModal = document.getElementById('checkout-modal-overlay');
+    if (checkoutModal) {
+      checkoutModal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+
+  function processPlaceOrder() {
+    const btn = document.getElementById('btn-place-order');
+    const btnText = document.getElementById('place-order-text');
+    const spinner = document.getElementById('checkout-spinner');
+
+    if (btn) btn.disabled = true;
+    if (btnText) btnText.textContent = 'AUTHORIZING PRIME AIRFREIGHT 782...';
+    if (spinner) spinner.style.display = 'inline-block';
+
+    setTimeout(() => {
+      const orderNum = Math.floor(100000 + Math.random() * 900000);
+      const orderId = `AMZN-${orderNum}`;
+      const firstItem = state.cart[0] ? state.cart[0].product : PRODUCTS_DATA[0];
+
+      const subtotalUSD = state.cart.reduce((sum, i) => sum + (i.product.price * i.quantity), 0);
+      const discountRate = state.appliedPromo ? state.appliedPromo.discountRate : 0;
+      const totalUSD = (subtotalUSD * (1 - discountRate)) * 1.08;
+
+      const newOrder = {
+        id: orderId,
+        date: "September 18, 2026",
+        product: state.cart.length > 1 ? `${firstItem.name} + ${state.cart.length - 1} more` : firstItem.name,
+        brand: firstItem.brand,
+        price: Math.round(totalUSD),
+        status: "IN FLIGHT // TRANSIT",
+        statusClass: "transit",
+        eta: "Today, 14:00 Express Delivery",
+        carrier: "Amazon Air Logistics Flight 782",
+        trackingNumber: `1Z-999-ATELIER-${orderNum}`,
+        origin: "Amazon Fulfilment Center DEL4 (Robotic)",
+        destination: `${state.deliveryLocation.recipient} &bull; ${state.deliveryLocation.city} ${state.deliveryLocation.pin}`
+      };
+
+      if (window.AtelierAccount && window.AtelierAccount.addOrder) {
+        window.AtelierAccount.addOrder(newOrder);
+      }
+
+      state.cart = [];
+      state.appliedPromo = null;
+      updateCartUI();
+
+      const activeScreen = document.getElementById('checkout-active-screen');
+      const successScreen = document.getElementById('checkout-success-screen');
+      const receiptOrderId = document.getElementById('receipt-order-id');
+      const receiptAmount = document.getElementById('receipt-amount-paid');
+
+      if (activeScreen) activeScreen.style.display = 'none';
+      if (successScreen) successScreen.style.display = 'block';
+      if (receiptOrderId) receiptOrderId.textContent = `#${orderId}-AT`;
+      if (receiptAmount) receiptAmount.textContent = getFormattedPrice(totalUSD);
+
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.textContent = 'PLACE ORDER • PAY NOW';
+      if (spinner) spinner.style.display = 'none';
+
+      showToast(`Order Confirmed: #${orderId}-AT`);
+
+      const trackBtn = document.getElementById('btn-receipt-track');
+      const accBtn = document.getElementById('btn-receipt-account');
+
+      if (trackBtn) {
+        trackBtn.onclick = () => {
+          closeCheckoutModal();
+          if (window.AtelierAccount && window.AtelierAccount.openTracking) {
+            window.AtelierAccount.openTracking(orderId);
+          }
+        };
+      }
+
+      if (accBtn) {
+        accBtn.onclick = () => {
+          closeCheckoutModal();
+          if (window.AtelierAccount && window.AtelierAccount.openModal) {
+            window.AtelierAccount.openModal('orders');
+          }
+        };
+      }
+    }, 1100);
+  }
+
+  // 5. Rich Quick View Specs & Gallery Modal
   function openQuickView(productId) {
     const product = state.products.find(p => p.id === productId);
     if (!product || !quickviewContent) return;
 
-    let specsHtml = '';
-    for (const [k, v] of Object.entries(product.specs)) {
-      specsHtml += `
+    let specsRows = '';
+    for (const [k, v] of Object.entries(product.specs || {})) {
+      specsRows += `
         <div class="modal-spec-row">
           <span class="spec-k font-mono">${k}</span>
-          <span class="spec-v">${v}</span>
+          <span class="spec-v font-body">${v}</span>
         </div>
       `;
     }
 
+    const primeDate = getPrimeDeliveryDateStr();
+
     quickviewContent.innerHTML = `
       <div class="modal-split">
         <div class="modal-image-col">
-          <img src="${product.image}" alt="${product.name}">
-          <div class="modal-image-badge font-mono">${product.tag}</div>
+          <div class="qv-main-image-wrap">
+            <img src="${product.image}" alt="${product.name}" id="qv-active-main-img">
+            <div class="modal-image-badge font-mono">${product.tag}</div>
+          </div>
+
+          <!-- Clickable Multi-Angle Thumbnails -->
+          <div class="qv-thumbnails-row">
+            <button type="button" class="qv-thumb-btn active" data-img-src="${product.image}">
+              <img src="${product.image}" alt="View 1">
+            </button>
+            <button type="button" class="qv-thumb-btn" data-img-src="assets/images/prod-synth.jpg">
+              <img src="assets/images/prod-synth.jpg" alt="View 2">
+            </button>
+            <button type="button" class="qv-thumb-btn" data-img-src="assets/images/prod-headphones.jpg">
+              <img src="assets/images/prod-headphones.jpg" alt="View 3">
+            </button>
+          </div>
         </div>
+
         <div class="modal-info-col">
-          <div class="modal-meta-top">
-            <span class="modal-brand font-mono">${product.brand}</span>
-            <span class="prime-pill font-mono">PRIME 24H EXPRESS</span>
+          <div class="modal-meta-top font-mono">
+            <span class="modal-brand">${product.brand} &bull; ${product.category}</span>
+            <span class="prime-pill">PRIME 24H EXPRESS</span>
           </div>
 
           <h2 class="modal-title font-display">${product.name}</h2>
-          <div class="modal-price-row">
-            <span class="modal-price font-display">${getFormattedPrice(product.price)}</span>
-            <span class="modal-tax-note font-mono">Tax Included &bull; Free Global Courier</span>
+
+          <div class="spotlight-rating-row" style="margin-bottom: 0.75rem;">
+            <span class="stars-graphic">★★★★★</span>
+            <span class="review-count font-mono" style="color: #007185; font-weight: 700;">${product.rating.toFixed(1)} (${product.reviewsCount} verified commissions)</span>
           </div>
 
-          <p class="modal-desc">${product.description}</p>
+          <div class="modal-price-row">
+            <span class="modal-price font-display">${getFormattedPrice(product.price)}</span>
+            <span class="modal-tax-note font-mono">0% Commission &bull; Free Global Prime Air</span>
+          </div>
+
+          <div class="qv-delivery-box font-mono" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.65rem 0.85rem; margin-bottom: 1.15rem; font-size: 0.75rem;">
+            <span style="color: #067D62; font-weight: 800;">✓ In Stock</span> &bull; FREE Prime Delivery <strong>${primeDate}</strong>
+          </div>
+
+          <p class="modal-desc font-body" style="line-height: 1.6; color: #565959; margin-bottom: 1.25rem;">
+            ${product.description}
+          </p>
 
           <div class="modal-specs-block">
             <h4 class="specs-heading font-mono">TECHNICAL SPECIFICATIONS</h4>
             <div class="specs-grid">
-              ${specsHtml}
+              ${specsRows}
             </div>
           </div>
 
-          <div class="modal-actions">
-            <button type="button" class="modal-add-btn font-mono" id="modal-add-btn" data-id="${product.id}">
+          <div class="modal-actions" style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+            <button type="button" class="btn-amzn-yellow font-mono" id="modal-add-btn" data-id="${product.id}" style="flex: 1; padding: 0.85rem 1.25rem; font-weight: 800;">
               <span>ADD TO BAG &bull; ${getFormattedPrice(product.price)}</span>
             </button>
+            <button type="button" class="btn-amzn-quickview font-mono" id="modal-buynow-btn" data-id="${product.id}" style="padding: 0.85rem 1.25rem; font-weight: 800; background: #ffffff;">
+              <span>1-CLICK BUY NOW</span>
+            </button>
           </div>
+
         </div>
       </div>
     `;
@@ -453,11 +740,30 @@
     if (quickviewOverlay) quickviewOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
 
+    // Thumbnail Switcher
+    quickviewContent.querySelectorAll('.qv-thumb-btn').forEach(btn => {
+      btn.onclick = () => {
+        quickviewContent.querySelectorAll('.qv-thumb-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const mainImg = document.getElementById('qv-active-main-img');
+        if (mainImg) mainImg.src = btn.dataset.imgSrc;
+      };
+    });
+
     const modalAdd = document.getElementById('modal-add-btn');
     if (modalAdd) {
       modalAdd.onclick = () => {
         addToCart(product.id, 1);
         closeQuickView();
+      };
+    }
+
+    const modalBuyNow = document.getElementById('modal-buynow-btn');
+    if (modalBuyNow) {
+      modalBuyNow.onclick = () => {
+        closeQuickView();
+        addToCart(product.id, 1);
+        openCheckoutModal();
       };
     }
   }
@@ -591,9 +897,33 @@
       }
     });
 
+    // Listen to Wishlist Changes from Account Modal
+    window.addEventListener('atelier-wishlist-updated', () => {
+      const wishlist = getWishlist();
+      document.querySelectorAll('.card-wishlist-btn').forEach(btn => {
+        const prodId = btn.dataset.wishlistId;
+        const isSaved = wishlist.includes(prodId);
+        btn.classList.toggle('active', isSaved);
+        const svg = btn.querySelector('svg');
+        if (svg) svg.setAttribute('fill', isSaved ? '#e11d48' : 'none');
+      });
+      const badgeEl = document.getElementById('account-wishlist-count');
+      if (badgeEl) badgeEl.textContent = wishlist.length;
+    });
+
     // Grid item delegation
     if (gridEl) {
       gridEl.addEventListener('click', (e) => {
+        const wishlistBtn = e.target.closest('.card-wishlist-btn');
+        if (wishlistBtn) {
+          e.stopPropagation();
+          const prodId = wishlistBtn.dataset.wishlistId;
+          if (prodId) {
+            toggleWishlist(prodId);
+          }
+          return;
+        }
+
         const addBtn = e.target.closest('.add-to-bag-btn');
         if (addBtn) {
           e.stopPropagation();
@@ -685,7 +1015,33 @@
     if (cartTriggerBtn) cartTriggerBtn.onclick = openCart;
     if (cartCloseBtn) cartCloseBtn.onclick = closeCart;
     if (cartOverlay) cartOverlay.onclick = closeCart;
-    if (checkoutBtn) checkoutBtn.onclick = handleCheckout;
+    if (checkoutBtn) checkoutBtn.onclick = openCheckoutModal;
+
+    // Cart Promo Voucher Button & Input
+    const promoBtn = document.getElementById('cart-promo-btn');
+    const promoInput = document.getElementById('cart-promo-input');
+    if (promoBtn) promoBtn.onclick = applyPromoCode;
+    if (promoInput) {
+      promoInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          applyPromoCode();
+        }
+      });
+    }
+
+    // Checkout Modal Triggers
+    const checkoutCloseBtn = document.getElementById('checkout-modal-close');
+    const checkoutOverlay = document.getElementById('checkout-modal-overlay');
+    const btnPlaceOrder = document.getElementById('btn-place-order');
+
+    if (checkoutCloseBtn) checkoutCloseBtn.onclick = closeCheckoutModal;
+    if (checkoutOverlay) {
+      checkoutOverlay.onclick = (e) => {
+        if (e.target === checkoutOverlay) closeCheckoutModal();
+      };
+    }
+    if (btnPlaceOrder) btnPlaceOrder.onclick = processPlaceOrder;
 
     // Quick View Triggers
     if (quickviewClose) quickviewClose.onclick = closeQuickView;
@@ -1146,6 +1502,18 @@
     initDemoDisclaimer();
     initAirfreightTimer();
     initAutocomplete();
+    // Expose global AtelierStore API
+    window.AtelierStore = {
+      state,
+      addToCart,
+      removeFromCart,
+      updateCartQuantity,
+      openCart,
+      closeCart,
+      openCheckout: openCheckoutModal,
+      toggleWishlist,
+      filterAndRender
+    };
   }
 
   if (document.readyState === 'loading') {

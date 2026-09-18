@@ -551,13 +551,41 @@
       </div>
 
       <div class="cart-drawer-footer">
+        <!-- Promo / Voucher Code -->
+        <div class="cart-promo-box font-mono">
+          <div class="promo-input-row">
+            <input type="text" id="cart-promo-input" class="promo-input-field" placeholder="PROMO: ATELIER10" maxlength="15" autocomplete="off">
+            <button type="button" id="cart-promo-btn" class="promo-apply-btn">APPLY</button>
+          </div>
+          <div id="cart-promo-feedback" class="promo-feedback"></div>
+        </div>
+
+        <div class="cart-summary-breakdown font-mono" id="cart-summary-breakdown" style="display: none;">
+          <div class="summary-line">
+            <span>Items Subtotal:</span>
+            <span id="summary-subtotal-val">$0.00</span>
+          </div>
+          <div class="summary-line discount-line" id="summary-discount-row" style="display: none; color: #067D62;">
+            <span id="summary-discount-label">Voucher (10%):</span>
+            <span id="summary-discount-val">-$0.00</span>
+          </div>
+          <div class="summary-line">
+            <span>Prime Robotic Airfreight:</span>
+            <span style="color: #007185; font-weight: 800;">FREE</span>
+          </div>
+          <div class="summary-line">
+            <span>Estimated Tax (8%):</span>
+            <span id="summary-tax-val">$0.00</span>
+          </div>
+        </div>
+
         <div class="cart-subtotal-row font-display">
-          <span style="font-size: 1.1rem; font-weight: 700; color: #0F1111;">Subtotal:</span>
+          <span style="font-size: 1.05rem; font-weight: 700; color: #0F1111;">Estimated Total:</span>
           <span style="font-size: 1.35rem; font-weight: 900; color: #B12704;" id="cart-subtotal-val">$0.00</span>
         </div>
 
         <button type="button" class="btn-amzn-checkout font-mono" id="cart-checkout-btn">
-          <span>Proceed to Checkout</span>
+          <span>PROCEED TO 1-CLICK CHECKOUT</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </button>
       </div>
@@ -700,6 +728,7 @@
         <!-- Account Tab Switchers -->
         <div class="account-tabs-bar font-mono">
           <button type="button" class="account-tab-btn active" data-tab="orders">DISPATCH &amp; ORDERS</button>
+          <button type="button" class="account-tab-btn" data-tab="wishlist">SAVED WISHLIST (<span id="account-wishlist-count">0</span>)</button>
           <button type="button" class="account-tab-btn" data-tab="profile">EXECUTIVE PROFILE</button>
           <button type="button" class="account-tab-btn" data-tab="addresses">SAVED ADDRESSES</button>
           <button type="button" class="account-tab-btn" data-tab="payments">PAYMENT METHODS</button>
@@ -709,6 +738,13 @@
         <div id="tab-pane-orders" class="account-tab-pane active">
           <div id="account-orders-list" class="orders-feed">
             <!-- Injected dynamically by account.js -->
+          </div>
+        </div>
+
+        <!-- Tab: Wishlist -->
+        <div id="tab-pane-wishlist" class="account-tab-pane">
+          <div id="account-wishlist-list" class="wishlist-feed font-mono">
+            <!-- Injected dynamically by store.js -->
           </div>
         </div>
 
@@ -793,7 +829,261 @@
   </div>
 
   <!-- =========================================================================
-       11. CONCEPT DEMO DISCLAIMER MODAL
+       10. COMPLETE MULTI-STEP 1-CLICK CHECKOUT MODAL
+       ========================================================================= -->
+  <div id="checkout-modal-overlay" class="modal-overlay">
+    <div class="modal-window checkout-modal-box font-body">
+      <button type="button" id="checkout-modal-close" class="modal-close-btn" aria-label="Close Checkout">&times;</button>
+      
+      <!-- Checkout Active Form Screen -->
+      <div id="checkout-active-screen" class="checkout-screen-container">
+        <div class="checkout-header-bar">
+          <div class="checkout-brand-lockup">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <div>
+              <span class="checkout-kicker font-mono">AMAZON 256-BIT ENCRYPTED CHECKOUT</span>
+              <h2 class="checkout-title font-display">Complete Your Commission</h2>
+            </div>
+          </div>
+          <div class="checkout-steps-badge font-mono">
+            <span>SECURE TRANSACTION</span>
+          </div>
+        </div>
+
+        <div class="checkout-split-grid">
+          <!-- Left: Checkout Configuration Steps -->
+          <div class="checkout-steps-col">
+            
+            <!-- Step 1: Shipping Address -->
+            <div class="checkout-step-block">
+              <div class="step-head">
+                <span class="step-num">1</span>
+                <h3 class="step-name font-display">Shipping &amp; Delivery Destination</h3>
+              </div>
+              <div class="step-body">
+                <div class="checkout-address-selector font-mono" id="checkout-address-list">
+                  <label class="checkout-addr-card active">
+                    <input type="radio" name="checkout-addr" value="addr-1" checked>
+                    <div class="addr-info">
+                      <div class="addr-tag">STUDIO // PRIMARY (DEFAULT)</div>
+                      <strong>Alexander Wright &bull; +91 98100 48291</strong>
+                      <p>Studio 4B, 18 Design District, New Delhi 110001</p>
+                    </div>
+                  </label>
+                  <label class="checkout-addr-card">
+                    <input type="radio" name="checkout-addr" value="addr-2">
+                    <div class="addr-info">
+                      <div class="addr-tag">PENTHOUSE RESIDENCE</div>
+                      <strong>Alexander Wright &bull; +91 98200 11928</strong>
+                      <p>Residence 32, Sky Enclave, Mumbai 400050</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Payment Method -->
+            <div class="checkout-step-block">
+              <div class="step-head">
+                <span class="step-num">2</span>
+                <h3 class="step-name font-display">Payment Authorization</h3>
+              </div>
+              <div class="step-body">
+                <div class="payment-method-selector font-mono" id="checkout-payment-list">
+                  <label class="checkout-pay-card active">
+                    <input type="radio" name="checkout-pay" value="apple-pay" checked>
+                    <div class="pay-info">
+                      <strong>Apple Pay &bull; 1-Tap Biometric</strong>
+                      <span>Instant zero-latency authorization</span>
+                    </div>
+                  </label>
+                  <label class="checkout-pay-card">
+                    <input type="radio" name="checkout-pay" value="titanium-card">
+                    <div class="pay-info">
+                      <strong>Black Titanium Corporate Card</strong>
+                      <span>Ending in 8842 &bull; Exp 09/29</span>
+                    </div>
+                  </label>
+                  <label class="checkout-pay-card">
+                    <input type="radio" name="checkout-pay" value="upi">
+                    <div class="pay-info">
+                      <strong>Instant UPI Direct (@okicici)</strong>
+                      <span>0% Transaction surcharge</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right: Order Summary Sticky Card -->
+          <div class="checkout-summary-col font-mono">
+            <div class="checkout-summary-card">
+              <h4 class="summary-card-title font-display">Order Summary</h4>
+              
+              <div class="checkout-items-preview" id="checkout-items-preview">
+                <!-- Injected via store.js -->
+              </div>
+
+              <div class="checkout-calc-rows">
+                <div class="c-row">
+                  <span>Items Subtotal:</span>
+                  <span id="checkout-subtotal-val">$0.00</span>
+                </div>
+                <div class="c-row" id="checkout-discount-row" style="display: none; color: #067D62;">
+                  <span id="checkout-discount-label">Voucher Discount:</span>
+                  <span id="checkout-discount-val">-$0.00</span>
+                </div>
+                <div class="c-row">
+                  <span>Robotic Airfreight 24H:</span>
+                  <span style="color: #007185; font-weight: 800;">FREE</span>
+                </div>
+                <div class="c-row">
+                  <span>Estimated Tax (8%):</span>
+                  <span id="checkout-tax-val">$0.00</span>
+                </div>
+                <div class="c-row total-row font-display">
+                  <span>Order Total:</span>
+                  <span id="checkout-total-val">$0.00</span>
+                </div>
+              </div>
+
+              <button type="button" class="btn-place-order" id="btn-place-order">
+                <span id="place-order-text">PLACE ORDER &bull; PAY NOW</span>
+                <div class="spinner-inline" id="checkout-spinner" style="display: none;"></div>
+              </button>
+
+              <p class="checkout-terms-note">
+                By placing your order, you agree to Amazon Atelier's <a href="#catalog">Privacy Notice</a> and <a href="#catalog">Conditions of Use</a>.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Checkout Success Receipt Screen -->
+      <div id="checkout-success-screen" class="checkout-screen-container" style="display: none;">
+        <div class="receipt-success-card">
+          <div class="receipt-icon-circle">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#067D62" stroke-width="3">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+
+          <span class="receipt-kicker font-mono">ORDER AUTHORIZED &bull; FLIGHT SCHEDULED</span>
+          <h2 class="receipt-title font-display">Thank you, your order is confirmed!</h2>
+          <p class="receipt-desc font-body">
+            An order confirmation and robotic tracking telemetry dispatch have been sent to <strong>a.wright@atelier-arch.com</strong>.
+          </p>
+
+          <div class="receipt-meta-box font-mono">
+            <div class="r-row">
+              <span class="r-k">CONFIRMATION ORDER ID</span>
+              <span class="r-v" id="receipt-order-id">#AMZN-892401-AT</span>
+            </div>
+            <div class="r-row">
+              <span class="r-k">ESTIMATED DISPATCH</span>
+              <span class="r-v" style="color: #007185;">Today, 14:00 (Amazon Air Logistics Flight 782)</span>
+            </div>
+            <div class="r-row">
+              <span class="r-k">FINAL AMOUNT PAID</span>
+              <span class="r-v" id="receipt-amount-paid">$1,999.00</span>
+            </div>
+          </div>
+
+          <div class="receipt-actions-row font-mono">
+            <button type="button" class="btn-amzn-yellow" id="btn-receipt-track" style="padding: 0.85rem 1.75rem;">
+              TRACK DISPATCH NOW
+            </button>
+            <button type="button" class="btn-amzn-quickview" id="btn-receipt-account" style="padding: 0.85rem 1.75rem;">
+              VIEW IN ACCOUNT
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       11. LIVE INTERACTIVE TELEMETRY & PACKAGE TRACKING MODAL
+       ========================================================================= -->
+  <div id="tracking-modal-overlay" class="modal-overlay">
+    <div class="modal-window tracking-modal-box font-body">
+      <button type="button" id="tracking-modal-close" class="modal-close-btn" aria-label="Close Tracking">&times;</button>
+      
+      <div class="tracking-modal-inner">
+        <div class="tracking-header">
+          <div>
+            <span class="tracking-kicker font-mono">AMAZON AIR LOGISTICS &bull; REAL-TIME TELEMETRY</span>
+            <h3 class="tracking-title font-display" id="tracking-order-title">Dispatch Tracking: #AMZN-948201</h3>
+          </div>
+          <span class="live-status-pill font-mono" id="tracking-status-pill">IN FLIGHT // TRANSIT</span>
+        </div>
+
+        <!-- Tracking Visual Stepper Progress Bar -->
+        <div class="tracking-stepper-wrap font-mono">
+          <div class="stepper-step completed">
+            <div class="step-dot">✓</div>
+            <span class="step-label">Order Placed</span>
+            <span class="step-time">09:15 AM</span>
+          </div>
+          <div class="stepper-step completed">
+            <div class="step-dot">✓</div>
+            <span class="step-label">Robotics Packed</span>
+            <span class="step-time">10:30 AM</span>
+          </div>
+          <div class="stepper-step active">
+            <div class="step-dot pulse"></div>
+            <span class="step-label">Amazon Air Flight 782</span>
+            <span class="step-time">In Transit</span>
+          </div>
+          <div class="stepper-step">
+            <div class="step-dot"></div>
+            <span class="step-label">Out for Delivery</span>
+            <span class="step-time">Est. 13:30</span>
+          </div>
+          <div class="stepper-step">
+            <div class="step-dot"></div>
+            <span class="step-label">Delivered &amp; Signed</span>
+            <span class="step-time">Est. 14:00</span>
+          </div>
+        </div>
+
+        <!-- Live Package Meta Grid -->
+        <div class="tracking-details-grid font-mono">
+          <div class="t-detail-box">
+            <span class="d-k">CARRIER</span>
+            <span class="d-v" id="track-carrier-val">Amazon Air Express (Boeing 767-300F)</span>
+          </div>
+          <div class="t-detail-box">
+            <span class="d-k">TRACKING NUMBER</span>
+            <span class="d-v" id="track-num-val">1Z-999-ATELIER-8492</span>
+          </div>
+          <div class="t-detail-box">
+            <span class="d-k">ORIGIN HUB</span>
+            <span class="d-v">Amazon Fulfilment Center DEL4 (Robotic)</span>
+          </div>
+          <div class="t-detail-box">
+            <span class="d-k">DESTINATION</span>
+            <span class="d-v" id="track-dest-val">Studio 4B, 18 Design District, New Delhi</span>
+          </div>
+        </div>
+
+        <button type="button" class="btn-amzn-quickview font-mono" id="tracking-close-bottom" style="width: 100%; padding: 0.75rem;">
+          CLOSE TELEMETRY VIEW
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       12. CONCEPT DEMO DISCLAIMER MODAL
        ========================================================================= -->
   <div id="demo-disclaimer-overlay" class="modal-overlay">
     <div class="modal-window demo-disclaimer-box">
