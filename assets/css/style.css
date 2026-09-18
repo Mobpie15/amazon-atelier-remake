@@ -571,105 +571,558 @@ img {
 }
 
 /* --------------------------------------------------------------------------
-   05. HERO PROMOTIONAL BANNER & DEALS
+   05. INTERACTIVE HERO SPOTLIGHT STAGE (LUXURY ARCHITECTURAL ATELIER)
    -------------------------------------------------------------------------- */
-.hero-banner-section {
+.hero-stage-section {
   position: relative;
-  background: linear-gradient(180deg, #131921 0%, #232f3e 60%, var(--bg-page) 100%);
-  padding-bottom: 2rem;
-  margin-bottom: -160px;
+  background: radial-gradient(circle at 80% 20%, rgba(255, 153, 0, 0.08) 0%, transparent 50%),
+              linear-gradient(180deg, #0f141d 0%, #131921 50%, #1a2332 100%);
+  color: #ffffff;
+  padding: 3.5rem 0 4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
 }
 
-.hero-banner-inner {
-  padding: 3rem 0 12rem;
-  color: #ffffff;
+.hero-split-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.hero-editorial-col {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.35rem;
 }
 
-.hero-deal-pill {
+.hero-edition-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0.85rem;
+  background: rgba(255, 153, 0, 0.1);
+  border: 1px solid rgba(255, 153, 0, 0.35);
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--amzn-amber);
+  width: fit-content;
+  letter-spacing: 0.08em;
+}
+
+.live-beacon-dot {
+  width: 7px;
+  height: 7px;
+  background: #00e676;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #00e676;
+  animation: pulseLive 2s infinite;
+}
+
+.hero-headline {
+  font-size: clamp(2.2rem, 4.2vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.headline-gradient {
+  background: linear-gradient(90deg, #ffffff 0%, #ff9900 65%, #ffd814 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-manifesto {
+  font-size: clamp(0.95rem, 1.2vw, 1.12rem);
+  color: #94a3b8;
+  line-height: 1.7;
+  max-width: 580px;
+}
+
+/* Flagship Model Switcher Row */
+.hero-model-switcher {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.model-switcher-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.12em;
+}
+
+.hero-model-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.hero-model-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.9rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-pill);
+  color: #cbd5e1;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-model-btn .btn-num {
+  font-size: 0.68rem;
+  color: #94a3b8;
+  font-weight: 800;
+}
+
+.hero-model-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.hero-model-btn.active {
+  background: var(--amzn-amber);
+  color: #0f1111;
+  border-color: var(--amzn-amber);
+  box-shadow: 0 0 16px rgba(255, 153, 0, 0.35);
+  font-weight: 800;
+}
+
+.hero-model-btn.active .btn-num {
+  color: #0f1111;
+}
+
+/* Action CTA Stack */
+.hero-cta-stack {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-hero-commission {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1.75rem;
+  background: linear-gradient(135deg, #ffd814 0%, #ff9900 100%);
+  color: #0f1111;
+  border: none;
+  border-radius: var(--radius-xs);
+  font-size: 0.88rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 20px rgba(255, 153, 0, 0.3);
+}
+
+.btn-hero-commission:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(255, 153, 0, 0.45);
+}
+
+.btn-hero-browse {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.35rem 0.85rem;
-  background: rgba(255, 153, 0, 0.15);
-  border: 1px solid var(--amzn-amber);
-  border-radius: var(--radius-pill);
-  font-size: 0.75rem;
-  font-weight: 800;
-  color: var(--amzn-amber);
-  width: fit-content;
-}
-
-.hero-title-main {
-  font-size: clamp(2rem, 4.5vw, 3.8rem);
-  font-weight: 900;
-  letter-spacing: -0.025em;
-  line-height: 1.1;
-  max-width: 800px;
-}
-
-.hero-subtitle-p {
-  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
-  color: #d1d5db;
-  max-width: 640px;
-  line-height: 1.6;
-}
-
-/* --------------------------------------------------------------------------
-   06. CURATED CATEGORY 4-GRID CARDS (CLASSIC AMAZON HERO OVERLAY)
-   -------------------------------------------------------------------------- */
-.hero-overlay-grid {
-  position: relative;
-  z-index: 20;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
-  margin-bottom: 2.5rem;
-}
-
-.category-bento-card {
-  background: #ffffff;
-  padding: 1.25rem;
+  padding: 0.85rem 1.35rem;
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: var(--radius-xs);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-hero-browse:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #ffffff;
+  text-decoration: none;
+}
+
+/* Telemetry Mini Row */
+.hero-telemetry-meta {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.telemetry-col {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 0.2rem;
 }
 
-.bento-card-title {
-  font-size: 1.2rem;
+.telemetry-col .t-k {
+  font-size: 0.65rem;
+  color: #64748b;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.telemetry-col .t-v {
+  font-size: 0.78rem;
   font-weight: 800;
-  color: var(--text-dark);
-  margin-bottom: 0.85rem;
+  letter-spacing: 0.04em;
 }
 
-.bento-img-frame {
-  width: 100%;
-  aspect-ratio: 1.1 / 1;
+/* Right: 3D Spotlight Stage Card */
+.hero-spotlight-col {
+  perspective: 1200px;
+}
+
+.spotlight-stage-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 1.75rem;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  transform-style: preserve-3d;
+  transition: border-color 0.3s ease;
+}
+
+.spotlight-stage-card:hover {
+  border-color: rgba(255, 153, 0, 0.4);
+}
+
+.spotlight-radial-glow {
+  position: absolute;
+  top: -25%;
+  right: -25%;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(255, 153, 0, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(45px);
+}
+
+.spotlight-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.spotlight-badge-brand {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #94a3b8;
+}
+
+.spotlight-prime-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #00a8e1;
+  background: rgba(0, 168, 225, 0.08);
+  padding: 0.2rem 0.55rem;
   border-radius: var(--radius-xs);
-  overflow: hidden;
-  background: #f7f7f7;
-  margin-bottom: 0.85rem;
+  border: 1px solid rgba(0, 168, 225, 0.25);
 }
 
-.bento-img-frame img {
+.spotlight-visual-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.25 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #090d12;
+  margin-bottom: 1.35rem;
+  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.5);
+}
+
+.spotlight-visual-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
 }
 
-.category-bento-card:hover .bento-img-frame img {
+.spotlight-stage-card:hover .spotlight-visual-frame img {
   transform: scale(1.05);
 }
 
-.bento-card-link {
-  font-size: 0.82rem;
+/* Floating Spec Badges */
+.floating-spec-badge {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.75rem;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-pill);
+  font-size: 0.7rem;
   font-weight: 700;
+  color: #f1f5f9;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.floating-spec-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00e676;
+  box-shadow: 0 0 6px #00e676;
+}
+
+.badge-top-right {
+  top: 14px;
+  right: 14px;
+  animation: floatBadge1 4.5s ease-in-out infinite;
+}
+
+.badge-bottom-left {
+  bottom: 14px;
+  left: 14px;
+  animation: floatBadge2 4.5s ease-in-out infinite 1.2s;
+}
+
+@keyframes floatBadge1 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes floatBadge2 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+/* Spotlight Card Bottom Info */
+.spotlight-bottom-info {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.spotlight-product-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.35rem;
+  line-height: 1.25;
+}
+
+.spotlight-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.spotlight-rating-row .stars-graphic {
+  color: var(--amzn-amber);
+  font-size: 0.85rem;
+}
+
+.spotlight-rating-row .review-count {
+  font-size: 0.72rem;
+  color: #94a3b8;
+}
+
+.spotlight-price-box {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.spotlight-price-label {
+  display: block;
+  font-size: 0.62rem;
+  color: #64748b;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.15rem;
+}
+
+.spotlight-price-val {
+  font-size: 1.55rem;
+  font-weight: 900;
+  color: var(--amzn-amber);
+  line-height: 1;
+}
+
+/* --------------------------------------------------------------------------
+   06. CURATED DEPARTMENTS DECK (HORIZONTAL HIGH-TICKET SHOWCASE)
+   -------------------------------------------------------------------------- */
+.departments-deck-section {
+  padding: 3rem 0;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 2.5rem;
+}
+
+.deck-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.deck-kicker {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
   color: var(--amzn-prime);
+  letter-spacing: 0.12em;
+  margin-bottom: 0.25rem;
+}
+
+.deck-title {
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 900;
+  color: var(--text-dark);
+  line-height: 1.15;
+}
+
+.deck-subnav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding: 0.25rem 0;
+  scrollbar-width: none;
+}
+
+.deck-subnav-links::-webkit-scrollbar {
+  display: none;
+}
+
+.deck-nav-btn {
+  padding: 0.4rem 0.85rem;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.deck-nav-btn:hover, .deck-nav-btn.active {
+  background: var(--amzn-navy);
+  color: #ffffff;
+  border-color: var(--amzn-navy);
+}
+
+.departments-deck-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+.deck-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.25s ease;
+}
+
+.deck-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.09);
+  border-color: var(--amzn-amber);
+}
+
+.deck-card-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.25 / 1;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+.deck-card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.deck-card:hover .deck-card-img-wrap img {
+  transform: scale(1.08);
+}
+
+.deck-card-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(15, 23, 42, 0.82);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+}
+
+.deck-card-body {
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.deck-card-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 0.35rem;
+  line-height: 1.25;
+}
+
+.deck-card-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 0.85rem;
+  flex: 1;
+}
+
+.deck-card-cta {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--amzn-prime);
+  letter-spacing: 0.04em;
+  transition: transform 0.2s ease;
+}
+
+.deck-card:hover .deck-card-cta {
+  transform: translateX(3px);
 }
 
 /* --------------------------------------------------------------------------
@@ -2170,11 +2623,12 @@ img {
 
 /* --- 11.1 Laptop & Small Desktop (max-width: 1200px) --- */
 @media (max-width: 1200px) {
-  .hero-banner-inner {
-    padding: 2.5rem 0 9rem;
+  .hero-split-grid {
+    gap: 2rem;
   }
-  .hero-banner-section {
-    margin-bottom: -110px;
+  .departments-deck-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
   }
   .products-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -2192,22 +2646,18 @@ img {
     padding: 0.35rem 0.85rem;
   }
 
-  .hero-banner-section {
-    margin-bottom: -60px;
+  .hero-split-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
   }
 
-  .hero-banner-inner {
-    padding: 2rem 0 6rem;
+  .hero-headline {
+    font-size: clamp(2rem, 4.5vw, 2.75rem);
   }
 
-  .hero-title-main {
-    font-size: clamp(1.8rem, 4.5vw, 2.75rem);
-  }
-
-  .hero-overlay-grid {
+  .departments-deck-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    margin-bottom: 2rem;
   }
 
   /* Show Mobile Filter Bar */
@@ -2367,47 +2817,57 @@ img {
     gap: 0.5rem;
   }
 
-  .hero-banner-section {
-    margin-bottom: 0;
-    padding-bottom: 1.5rem;
+  .hero-stage-section {
+    padding: 2.25rem 0 2.5rem;
   }
 
-  .hero-banner-inner {
-    padding: 1.5rem 0 1.5rem;
-    gap: 0.65rem;
+  .hero-split-grid {
+    gap: 2rem;
   }
 
-  .hero-title-main {
-    font-size: 1.75rem;
-    line-height: 1.15;
+  .hero-headline {
+    font-size: 1.85rem;
+    line-height: 1.1;
   }
 
-  .hero-subtitle-p {
+  .hero-manifesto {
     font-size: 0.88rem;
-    line-height: 1.5;
   }
 
-  .hero-overlay-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.65rem;
-    margin-bottom: 1.5rem;
+  .hero-cta-stack {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .category-bento-card {
-    padding: 0.75rem;
+  .btn-hero-commission, .btn-hero-browse {
+    justify-content: center;
+    width: 100%;
   }
 
-  .bento-card-title {
-    font-size: 0.88rem;
-    margin-bottom: 0.4rem;
+  .spotlight-stage-card {
+    padding: 1.15rem;
   }
 
-  .bento-img-frame {
-    margin-bottom: 0.4rem;
+  .spotlight-product-title {
+    font-size: 1rem;
   }
 
-  .bento-card-link {
-    font-size: 0.7rem;
+  .spotlight-price-val {
+    font-size: 1.35rem;
+  }
+
+  .floating-spec-badge {
+    font-size: 0.62rem;
+    padding: 0.3rem 0.55rem;
+  }
+
+  .departments-deck-section {
+    padding: 2rem 0;
+  }
+
+  .departments-deck-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   /* 2-Column Responsive Product Cards */
@@ -2551,10 +3011,6 @@ img {
 
 /* --- 11.5 Small Mobile Screens (max-width: 380px) --- */
 @media (max-width: 380px) {
-  .hero-overlay-grid {
-    grid-template-columns: 1fr;
-  }
-
   .products-grid {
     grid-template-columns: 1fr;
   }

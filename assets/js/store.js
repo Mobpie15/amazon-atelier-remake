@@ -662,7 +662,7 @@
       });
     }
 
-    initDragToScroll('.subnav-bar, .mobile-quick-chips, .mobile-filter-bar, .account-tabs-bar');
+    initDragToScroll('.subnav-bar, .mobile-quick-chips, .mobile-filter-bar, .account-tabs-bar, .deck-subnav-links');
 
     // Cart delegation
     if (cartItemsList) {
@@ -823,10 +823,167 @@
       };
     }
 
-    // Hero Add Button
-    if (heroAddBtn) {
-      heroAddBtn.onclick = () => addToCart(PRODUCTS_DATA[0].id, 1);
+    // -----------------------------------------------------------------------
+    // Interactive Hero Stage Dynamic Model Switcher & Commissioning
+    // -----------------------------------------------------------------------
+    let currentHeroProductId = 'amzn-001';
+
+    const HERO_SPECS_MAP = {
+      'amzn-001': {
+        spec1: 'Anodized Aluminum Unibody',
+        spec2: '32-bit Stereo Signal Chain'
+      },
+      'amzn-002': {
+        spec1: '40mm Titanium Drivers',
+        spec2: 'Adaptive Digital ANC'
+      },
+      'amzn-003': {
+        spec1: '60MP Full-Frame BSI CMOS',
+        spec2: 'Machined Solid Brass'
+      },
+      'amzn-005': {
+        spec1: '38mm Brushed Steel',
+        spec2: 'Dieter Rams Legacy'
+      }
+    };
+
+    function switchHeroModel(productId) {
+      const product = PRODUCTS_DATA.find(p => p.id === productId);
+      if (!product) return;
+
+      currentHeroProductId = productId;
+
+      // 1. Update Switcher Buttons
+      document.querySelectorAll('.hero-model-btn').forEach(btn => {
+        if (btn.dataset.productId === productId) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // 2. Update Spotlight Elements
+      const brandEl = document.getElementById('hero-spotlight-brand');
+      const imgEl = document.getElementById('hero-spotlight-img');
+      const titleEl = document.getElementById('hero-spotlight-title');
+      const starsEl = document.getElementById('hero-spotlight-stars');
+      const reviewsEl = document.getElementById('hero-spotlight-reviews');
+      const priceEl = document.getElementById('hero-spotlight-price');
+      const spec1El = document.getElementById('hero-spec-1');
+      const spec2El = document.getElementById('hero-spec-2');
+      const ctaBtnText = document.getElementById('hero-cta-btn-text');
+
+      if (brandEl) brandEl.textContent = product.brand;
+      if (titleEl) titleEl.textContent = product.name;
+      if (starsEl) starsEl.textContent = '★'.repeat(Math.round(product.rating)) + '☆'.repeat(5 - Math.round(product.rating));
+      if (reviewsEl) reviewsEl.textContent = `${product.rating.toFixed(1)} (${product.reviewsCount} verified commissions)`;
+      
+      const formattedPrice = getFormattedPrice(product.price);
+      if (priceEl) priceEl.textContent = formattedPrice;
+      if (ctaBtnText) ctaBtnText.textContent = `COMMISSION OBJECT • ${formattedPrice}`;
+
+      // Floating specs
+      const specs = HERO_SPECS_MAP[productId] || {
+        spec1: Object.values(product.specs || {})[0] || 'Architectural Grade',
+        spec2: Object.values(product.specs || {})[1] || 'Zero Latency Dispatch'
+      };
+
+      if (spec1El) {
+        spec1El.innerHTML = `<span class="dot"></span><span>${specs.spec1}</span>`;
+      }
+      if (spec2El) {
+        spec2El.innerHTML = `<span class="dot"></span><span>${specs.spec2}</span>`;
+      }
+
+      // Smooth visual image transition
+      if (imgEl) {
+        imgEl.style.opacity = '0.3';
+        imgEl.style.transform = 'scale(0.96)';
+        setTimeout(() => {
+          imgEl.src = product.image;
+          imgEl.alt = product.name;
+          imgEl.style.opacity = '1';
+          imgEl.style.transform = 'scale(1)';
+        }, 180);
+      }
     }
+
+    // Hero Model Switcher Click Listeners
+    document.querySelectorAll('.hero-model-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const prodId = btn.dataset.productId;
+        if (prodId) switchHeroModel(prodId);
+      });
+    });
+
+    // Hero Direct Commission Button
+    const heroCommissionBtn = document.getElementById('hero-commission-btn');
+    if (heroCommissionBtn) {
+      heroCommissionBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        addToCart(currentHeroProductId, 1);
+        openCart();
+      });
+    }
+
+    // Hero Spotlight Card QuickView Trigger (when clicking card)
+    const heroSpotlightCard = document.getElementById('hero-spotlight-card');
+    if (heroSpotlightCard) {
+      heroSpotlightCard.addEventListener('click', (e) => {
+        if (e.target.closest('.hero-model-btn') || e.target.closest('#hero-commission-btn')) return;
+        openQuickView(currentHeroProductId);
+      });
+    }
+
+    // -----------------------------------------------------------------------
+    // Curated Departments Deck Navigation & Filtering
+    // -----------------------------------------------------------------------
+    document.querySelectorAll('.deck-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        e.preventDefault();
+        const cat = card.dataset.cat;
+        if (!cat) return;
+
+        state.activeCategory = cat;
+        if (categorySelect) categorySelect.value = cat;
+
+        document.querySelectorAll('.deck-nav-btn').forEach(b => {
+          b.classList.toggle('active', b.dataset.cat === cat);
+        });
+
+        updateActivePill();
+        filterAndRender();
+
+        const catalogEl = document.getElementById('catalog');
+        if (catalogEl) {
+          catalogEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    document.querySelectorAll('.deck-nav-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const cat = btn.dataset.cat;
+        if (!cat) return;
+
+        state.activeCategory = cat;
+        if (categorySelect) categorySelect.value = cat;
+
+        document.querySelectorAll('.deck-nav-btn').forEach(b => {
+          b.classList.toggle('active', b === btn);
+        });
+
+        updateActivePill();
+        filterAndRender();
+
+        const catalogEl = document.getElementById('catalog');
+        if (catalogEl) {
+          catalogEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
 
     // Curated Add-ons Click Handlers
     document.querySelectorAll('.btn-addon-add').forEach(btn => {

@@ -165,57 +165,213 @@
   </header>
 
   <!-- =========================================================================
-       03. HERO PROMOTIONAL BANNER
+       03. INTERACTIVE HERO SPOTLIGHT STAGE (IMMERSIVE LUXURY ATELIER)
        ========================================================================= -->
-  <section class="hero-banner-section">
+  <section class="hero-stage-section" id="hero-stage">
     <div class="container">
-      <div class="hero-banner-inner">
-        <div class="hero-deal-pill font-mono">
-          <span>AMAZON ATELIER // LUXURY REDESIGN V3</span>
+      
+      <div class="hero-split-grid">
+        
+        <!-- Left: Hero Commission Editorial -->
+        <div class="hero-editorial-col">
+          <div class="hero-edition-pill font-mono">
+            <span class="live-beacon-dot"></span>
+            <span>AMAZON ATELIER // ARCHITECTURAL COMMERCE &bull; EDITION 03</span>
+          </div>
+
+          <h1 class="hero-headline font-display">
+            CURATED OBJECTS.<br>
+            <span class="headline-gradient">ENGINEERED DISPATCH.</span>
+          </h1>
+
+          <p class="hero-manifesto font-body">
+            Precision unibody synthesizers, titanium acoustics, and quiet luxury chronographs. Backed by 0-latency checkout and complimentary 24-hour robotic Amazon Airfreight logistics.
+          </p>
+
+          <!-- Interactive Flagship Model Selector -->
+          <div class="hero-model-switcher font-mono">
+            <span class="model-switcher-label">FEATURED COMMISSIONS:</span>
+            <div class="hero-model-pills-row">
+              <button type="button" class="hero-model-btn active" data-product-id="amzn-001">
+                <span class="btn-num">01</span>
+                <span class="btn-txt">OP-1 Synth</span>
+              </button>
+              <button type="button" class="hero-model-btn" data-product-id="amzn-002">
+                <span class="btn-num">02</span>
+                <span class="btn-txt">B&amp;O H95</span>
+              </button>
+              <button type="button" class="hero-model-btn" data-product-id="amzn-003">
+                <span class="btn-num">03</span>
+                <span class="btn-txt">Leica M11</span>
+              </button>
+              <button type="button" class="hero-model-btn" data-product-id="amzn-005">
+                <span class="btn-num">04</span>
+                <span class="btn-txt">Braun Watch</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Hero Action Stack -->
+          <div class="hero-cta-stack font-mono">
+            <button type="button" class="btn-hero-commission" id="hero-commission-btn">
+              <span id="hero-cta-btn-text">COMMISSION OBJECT &bull; $1,999</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14"></path>
+                <path d="M12 5l7 7-7 7"></path>
+              </svg>
+            </button>
+            <a href="#catalog" class="btn-hero-browse">
+              <span>EXPLORE 16 OBJECTS</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Live Telemetry Ticker Mini -->
+          <div class="hero-telemetry-meta font-mono">
+            <div class="telemetry-col">
+              <span class="t-k">LOGISTICS TIER</span>
+              <span class="t-v" style="color: #00A8E1;">PRIME AIR 24H</span>
+            </div>
+            <div class="telemetry-col">
+              <span class="t-k">AUTHENTICITY</span>
+              <span class="t-v" style="color: #00E676;">100% VERIFIED</span>
+            </div>
+            <div class="telemetry-col">
+              <span class="t-k">SURCHARGE</span>
+              <span class="t-v" style="color: #FF9900;">0% GLOBAL COMMISSION</span>
+            </div>
+          </div>
+
         </div>
-        <h1 class="hero-title-main font-display">
-          CURATED ARCHITECTURAL COMMERCE.
-        </h1>
-        <p class="hero-subtitle-p font-body">
-          Precision industrial design, titanium acoustics, and quiet luxury apparel. Engineered with 0-latency checkout and Free One-Day Prime Delivery worldwide.
-        </p>
+
+        <!-- Right: 3D Spotlight Stage -->
+        <div class="hero-spotlight-col">
+          <div class="spotlight-stage-card" id="hero-spotlight-card">
+            
+            <!-- Atmospheric ambient glow -->
+            <div class="spotlight-radial-glow"></div>
+
+            <!-- Spotlight Header Badges -->
+            <div class="spotlight-top-row font-mono">
+              <div class="spotlight-badge-brand" id="hero-spotlight-brand">TEENAGE ENGINEERING</div>
+              <div class="spotlight-prime-badge">
+                <svg width="36" height="12" viewBox="0 0 100 28" fill="currentColor">
+                  <path fill="#007185" d="M14.5 4.5h6.2c4.1 0 6.6 2.3 6.6 5.8 0 3.7-2.6 6-6.8 6h-3.4v7.2h-2.6V4.5zm2.6 9.4h3.3c2.7 0 4.1-1.3 4.1-3.6 0-2.2-1.4-3.5-4.1-3.5h-3.3v7.1zM31 10.4h2.5v2.8h.1c.8-1.9 2.5-3.1 4.5-3.1.6 0 1.1.1 1.6.3v2.7c-.6-.2-1.2-.3-1.9-.3-2.1 0-3.8 1.6-4.2 3.8v7h-2.6V10.4zm11 0h2.6v13.1H42V10.4zm1.3-6.5c.9 0 1.6.7 1.6 1.6 0 .9-.7 1.6-1.6 1.6-.9 0-1.6-.7-1.6-1.6 0-.9.7-1.6 1.6-1.6zM48 10.4h2.5v2.3h.1c1-1.6 2.8-2.6 4.7-2.6 2.1 0 3.8 1 4.5 2.8h.1c1-1.8 3-2.8 5-2.8 3.1 0 5.3 2.1 5.3 5.7v7.7h-2.6v-7.3c0-2.3-1.2-3.6-3.1-3.6-1.8 0-3.3 1.5-3.3 3.8v7.1h-2.6v-7.3c0-2.3-1.2-3.6-3.1-3.6-1.8 0-3.4 1.5-3.4 3.8v7.1H48V10.4zm29.8 6.9c0-3.8 2.8-7.1 6.8-7.1 4.1 0 6.6 3.1 6.6 7.1 0 .4 0 .9-.1 1.2H79.6c.4 2.4 2.2 4.1 4.8 4.1 1.8 0 3.2-.8 3.9-2.1l2.2 1.1c-1.2 2.2-3.5 3.5-6.2 3.5-4.3 0-7.3-3.1-7.3-7.2zm10.7-1.2c-.2-2.1-1.7-3.7-4-3.7-2.2 0-3.8 1.6-4.1 3.7h8.1z"/>
+                  <path fill="#FF9900" d="M12.5 23.5c7.8 3.2 17.5 4.5 27.2 2.8 1-.2 2.1-.5 3.1-.8l-.8-1.8c-.9.3-1.8.5-2.7.7-9 1.6-18 .4-25.2-2.5l-1.6 1.6z"/>
+                </svg>
+                <span>ONE-DAY DISPATCH</span>
+              </div>
+            </div>
+
+            <!-- Spotlight Object Visual -->
+            <div class="spotlight-visual-frame" id="hero-spotlight-visual">
+              <img src="assets/images/prod-synth.jpg" alt="OP-1 Field Synthesizer" id="hero-spotlight-img">
+              
+              <!-- Floating Specs Badges -->
+              <div class="floating-spec-badge badge-top-right font-mono" id="hero-spec-1">
+                <span class="dot"></span>
+                <span>Anodized Aluminum Unibody</span>
+              </div>
+              <div class="floating-spec-badge badge-bottom-left font-mono" id="hero-spec-2">
+                <span class="dot"></span>
+                <span>32-bit Stereo Signal Path</span>
+              </div>
+            </div>
+
+            <!-- Spotlight Card Bottom Info -->
+            <div class="spotlight-bottom-info">
+              <div>
+                <h3 class="spotlight-product-title font-display" id="hero-spotlight-title">OP-1 Field Portable Synthesizer</h3>
+                <div class="spotlight-rating-row">
+                  <span class="stars-graphic" id="hero-spotlight-stars">★★★★★</span>
+                  <span class="review-count font-mono" id="hero-spotlight-reviews">4.9 (342 verified commissions)</span>
+                </div>
+              </div>
+              <div class="spotlight-price-box font-mono">
+                <span class="spotlight-price-label">DIRECT PRICE:</span>
+                <span class="spotlight-price-val font-display" id="hero-spotlight-price">$1,999</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
 
-      <!-- 4-Bento Category Overlay Cards -->
-      <div class="hero-overlay-grid">
-        
-        <div class="category-bento-card">
-          <h3 class="bento-card-title font-display">Studio Acoustics</h3>
-          <div class="bento-img-frame">
-            <img src="assets/images/prod-headphones.jpg" alt="Bang & Olufsen Acoustics">
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       03.1 CURATED DEPARTMENTS SHOWCASE (ELEGANT HORIZONTAL DECK)
+       ========================================================================= -->
+  <section class="departments-deck-section">
+    <div class="container">
+      <div class="deck-header-row">
+        <div>
+          <span class="deck-kicker font-mono">FLAGSHIP DISCIPLINES</span>
+          <h2 class="deck-title font-display">Curated Departments</h2>
+        </div>
+        <div class="deck-subnav-links font-mono">
+          <button type="button" class="deck-nav-btn active" data-cat="All">All Disciplines</button>
+          <button type="button" class="deck-nav-btn" data-cat="Synthesizers">Synthesizers</button>
+          <button type="button" class="deck-nav-btn" data-cat="Acoustics">Acoustics</button>
+          <button type="button" class="deck-nav-btn" data-cat="Optics">Optics</button>
+          <button type="button" class="deck-nav-btn" data-cat="Timepieces">Horology</button>
+          <button type="button" class="deck-nav-btn" data-cat="Apparel & Scent">Couture</button>
+        </div>
+      </div>
+
+      <div class="departments-deck-grid">
+        <div class="deck-card" data-cat="Synthesizers">
+          <div class="deck-card-img-wrap">
+            <img src="assets/images/prod-synth.jpg" alt="Synthesizers & Sound" loading="lazy">
+            <div class="deck-card-badge font-mono">01 // SOUND</div>
           </div>
-          <a href="#catalog" class="bento-card-link font-mono" data-cat="Acoustics">Shop Studio Sound &rarr;</a>
+          <div class="deck-card-body">
+            <h3 class="deck-card-name font-display">Synthesizers &amp; Audio</h3>
+            <p class="deck-card-desc font-body">Field recorders, tactile workstations &amp; stereo audio chains.</p>
+            <span class="deck-card-cta font-mono">Explore Sound &rarr;</span>
+          </div>
         </div>
 
-        <div class="category-bento-card">
-          <h3 class="bento-card-title font-display">Precision Horology</h3>
-          <div class="bento-img-frame">
-            <img src="assets/images/prod-horology.jpg" alt="Ressence Type 3 Horology">
+        <div class="deck-card" data-cat="Acoustics">
+          <div class="deck-card-img-wrap">
+            <img src="assets/images/prod-headphones.jpg" alt="Acoustics & Reference" loading="lazy">
+            <div class="deck-card-badge font-mono">02 // ACOUSTICS</div>
           </div>
-          <a href="#catalog" class="bento-card-link font-mono" data-cat="Timepieces">Explore Timepieces &rarr;</a>
+          <div class="deck-card-body">
+            <h3 class="deck-card-name font-display">Studio Acoustics</h3>
+            <p class="deck-card-desc font-body">Titanium reference headphones &amp; tempered glass monitors.</p>
+            <span class="deck-card-cta font-mono">Explore Acoustics &rarr;</span>
+          </div>
         </div>
 
-        <div class="category-bento-card">
-          <h3 class="bento-card-title font-display">Haute Couture</h3>
-          <div class="bento-img-frame">
-            <img src="assets/images/prod-trench.jpg" alt="Haute Couture Trench">
+        <div class="deck-card" data-cat="Optics">
+          <div class="deck-card-img-wrap">
+            <img src="assets/images/prod-camera.jpg" alt="Optics & Cameras" loading="lazy">
+            <div class="deck-card-badge font-mono">03 // OPTICS</div>
           </div>
-          <a href="#catalog" class="bento-card-link font-mono" data-cat="Apparel">Discover Silhouettes &rarr;</a>
+          <div class="deck-card-body">
+            <h3 class="deck-card-name font-display">Optics &amp; Rangefinders</h3>
+            <p class="deck-card-desc font-body">Pure monochrome rangefinders &amp; optical precision glass.</p>
+            <span class="deck-card-cta font-mono">Explore Optics &rarr;</span>
+          </div>
         </div>
 
-        <div class="category-bento-card">
-          <h3 class="bento-card-title font-display">Optics &amp; Cameras</h3>
-          <div class="bento-img-frame">
-            <img src="assets/images/prod-camera.jpg" alt="Leica Camera Optics">
+        <div class="deck-card" data-cat="Timepieces">
+          <div class="deck-card-img-wrap">
+            <img src="assets/images/prod-horology.jpg" alt="Horology & Timepieces" loading="lazy">
+            <div class="deck-card-badge font-mono">04 // HOROLOGY</div>
           </div>
-          <a href="#catalog" class="bento-card-link font-mono" data-cat="Optics">Browse Rangefinders &rarr;</a>
+          <div class="deck-card-body">
+            <h3 class="deck-card-name font-display">Precision Horology</h3>
+            <p class="deck-card-desc font-body">Oil-filled mechanical dial assemblies &amp; German chronos.</p>
+            <span class="deck-card-cta font-mono">Explore Horology &rarr;</span>
+          </div>
         </div>
-
       </div>
     </div>
   </section>

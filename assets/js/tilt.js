@@ -7,7 +7,7 @@
   function initTilt() {
     if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
 
-    const cards = document.querySelectorAll('.product-card, .hero-spotlight');
+    const cards = document.querySelectorAll('.product-card, .hero-spotlight, .spotlight-stage-card, .deck-card');
 
     cards.forEach(card => {
       let glare = card.querySelector('.card-glare');
